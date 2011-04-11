@@ -5,7 +5,7 @@ require 'net/http'
 
 module Dimelo
   module API
-    class Transport
+    class Client
       
       attr_accessor :base_uri, :default_parameters
       

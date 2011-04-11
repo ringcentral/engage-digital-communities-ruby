@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Dimelo::API::Transport do
+describe Dimelo::API::Client do
   
   subject do
-    Dimelo::API::Transport.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
+    Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
   end
   
   describe '#request' do
