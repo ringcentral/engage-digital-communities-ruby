@@ -15,7 +15,9 @@ module Dimelo
       end
       
       def transport(method, path, params={})
-        connection.perform(request(method, path, params))
+        response = connection.perform(request(method, path, params))
+        response.value
+        response.body
       end
       
       def request(method, path, params)

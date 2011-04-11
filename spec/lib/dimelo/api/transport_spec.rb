@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Dimelo::API::Transport do
   
   subject do
-    Dimelo::API::Transport.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => 'b8d969f01114a7f40fb25ae30348bb37')
+    Dimelo::API::Transport.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
   end
   
   describe '#request' do
@@ -33,7 +33,7 @@ describe Dimelo::API::Transport do
       req = request(:params => {:query => {:foo => 42}})
       uri = URI.parse(req.path)
       params = CGI.parse(uri.query)
-      params.should == {'foo' => %w(42), 'access_token' => %w(b8d969f01114a7f40fb25ae30348bb37)}
+      params.should == {'foo' => %w(42), 'access_token' => %w(0efeca9dfb379d7b27c2575ca3d347bf)}
     end
     
     it 'provide body' do
@@ -45,8 +45,14 @@ describe Dimelo::API::Transport do
   
   describe '#transport' do
     
-    it 'return an HTTPResponse' do
-      subject.transport(:get, '/check').should be_a(Net::HTTPResponse)
+    it 'return an the response body' do
+      subject.transport(:get, '/check').should == %Q({\n  "success": true\n})
+    end
+    
+    it 'raise if response is not a 2XX' do
+      expect{
+        subject.transport(:get, '/check', {:query => {'access_token' => 'invalid'}})
+      }.to raise_error(Net::HTTPExceptions)
     end
     
   end
