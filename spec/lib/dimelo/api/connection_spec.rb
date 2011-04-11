@@ -2,6 +2,29 @@ require 'spec_helper'
 
 describe Dimelo::API::Connection do
   
+  describe '.from_uri' do
+    
+    let(:http_uri) { URI.parse('http://example.com:8080/foo/bar?egg=spam')}
+    let(:https_uri) { URI.parse('https://example.com:8080/foo/bar?egg=spam')}
+    
+    it 'should infer :use_ssl => true from the scheme' do
+      Dimelo::API::Connection.should_receive(:new).with('example.com', 8080, :use_ssl => true)
+      Dimelo::API::Connection.from_uri(https_uri)
+    end
+    
+    it 'should infer :use_ssl => false from the scheme' do
+      Dimelo::API::Connection.should_receive(:new).with('example.com', 8080, :use_ssl => false)
+      Dimelo::API::Connection.from_uri(http_uri)
+    end
+    
+    it 'should reuse connections for same scheme/hosts/port' do
+      first = Dimelo::API::Connection.from_uri(http_uri)
+      second = Dimelo::API::Connection.from_uri(http_uri)
+      first.object_id.should == second.object_id
+    end
+    
+  end
+  
   describe 'HTTP' do
   
     subject do
