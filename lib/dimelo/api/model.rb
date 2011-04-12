@@ -2,6 +2,10 @@ module Dimelo
   module API
     class Model  
       
+      extend ActiveModel::Translation
+      extend ActiveModel::Naming
+      include ActiveModel::Validations
+      
       class << self
         
         def path(*args)
@@ -49,14 +53,24 @@ module Dimelo
         
       end
       
-      attr_accessor :client, :errors
+      attr_accessor :client
+      attr_reader :errors
       
       delegate :compute_path, :to => 'self.class'
       
       def initialize(hash={}, client=nil)
+        @errors = ActiveModel::Errors.new(self)
         self.client = client
         hash.each do |k,v|
           self.send("#{k}=", v)
+        end
+      end
+      
+      def errors=(errs)
+        @errors = ActiveModel::Errors.new(self).tap do |errors|
+          errs.each do |error|
+            errors.add(error['attribute'], error['type'])
+          end
         end
       end
       
@@ -90,8 +104,20 @@ module Dimelo
         attrs = submit_attributes
         path = compute_path(attrs)
         response = client.transport(:post, path, :body => attrs)
-        merge!(self.class.parse(response))
+        self.attributes = Dimelo::API.decode_json(response)
         id.present?
+      end
+      
+      def update
+        attrs = submit_attributes
+        path = compute_path(attributes)
+        response = client.transport(:put, path, :body => attrs)
+        self.attributes = Dimelo::API.decode_json(response)
+        errors.empty?
+      end
+      
+      def valid?
+        true
       end
       
       def destroy
