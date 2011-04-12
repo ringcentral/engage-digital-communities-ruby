@@ -12,12 +12,7 @@ module Dimelo
         def attribute(arg)
           @attributes ||= []
           @attributes << arg
-          define_method arg do
-            @_values[arg.to_s]
-          end
-          define_method "#{arg}=" do |value|
-            @_values[arg.to_s] = value
-          end
+          attr_accessor(arg)
         end
         
         def attributes(*args)
@@ -58,7 +53,6 @@ module Dimelo
       delegate :compute_path, :to => 'self.class'
       
       def initialize(hash={}, client=nil)
-        @_values = {}
         self.client = client
         hash.each do |k,v|
           self.send("#{k}=", v)
@@ -66,7 +60,16 @@ module Dimelo
       end
       
       def attributes
-        @_values
+        Hash[self.class.attributes.map{ |key| self.send(key) }]
+      end
+      
+      def post_params
+        Hash[self.class.submit_attributes.map{ |key| self.send(key) }]
+      end
+      
+      def destroy
+        client.transport(:delete, compute_path(self.attributes))
+        freeze
       end
       
       def reload
