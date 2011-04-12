@@ -19,6 +19,7 @@ module Dimelo
           args.each do |arg|
             attribute arg
           end
+          @attributes
         end
         
         def submit_attributes(*args)
@@ -48,7 +49,7 @@ module Dimelo
         
       end
       
-      attr_accessor :client
+      attr_accessor :client, :errors
       
       delegate :compute_path, :to => 'self.class'
       
@@ -60,11 +61,37 @@ module Dimelo
       end
       
       def attributes
-        Hash[self.class.attributes.map{ |key| self.send(key) }]
+        Hash[self.class.attributes.map{ |key| [key, self.send(key)] }]
       end
       
-      def post_params
-        Hash[self.class.submit_attributes.map{ |key| self.send(key) }]
+      def attributes=(hash)
+        hash.each do |attr, value|
+          self.send("#{attr}=", value)
+        end
+      end
+      
+      def submit_attributes
+        Hash[self.class.submit_attributes.map{ |key| [key, self.send(key)] }]
+      end
+      
+      def new_record?
+        id.blank?
+      end
+      
+      def save
+        if new_record?
+          create
+        else
+          update
+        end
+      end
+      
+      def create
+        attrs = submit_attributes
+        path = compute_path(attrs)
+        response = client.transport(:post, path, :body => attrs)
+        merge!(self.class.parse(response))
+        id.present?
       end
       
       def destroy
@@ -81,6 +108,14 @@ module Dimelo
       
       def ==(other)
         other.is_a?(self.class) and self.id == other.id and self.id.present?
+      end
+      
+      def merge!(other)
+        self.attributes = other.attributes
+      end
+      
+      def to_json
+        Dimelo::API.encode_json(self.attributes)
       end
       
     end

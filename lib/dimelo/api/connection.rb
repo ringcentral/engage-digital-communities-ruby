@@ -45,6 +45,7 @@ module Dimelo
         retry_count -= 1
         initialize_client
         retry if retry_count >= 0
+        raise
       end
   
       private

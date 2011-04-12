@@ -1,5 +1,10 @@
 module Dimelo
   module API
+    
+    class Error < Exception
+      attr_accessor :original_exception
+    end
+    
     class Client
       
       attr_accessor :base_uri, :default_parameters
@@ -13,22 +18,24 @@ module Dimelo
         response = connection.perform(request(method, path, params))
         response.value
         response.body
+      rescue Net::HTTPExceptions => e
+        raise Error.new(response.body).tap{ |exc| exc.original_exception = e }
       end
       
       def request(method, path, params)
         request_class = Net::HTTP.const_get(method.to_s.camelize)
-        request_class.new(absolute_uri(path, params)).tap do |request|
+        request_class.new(request_uri(path, params)).tap do |request|
           request.body = request_body(params[:body])
         end
       end
       
       private
       
-      def absolute_uri(path, params)
+      def request_uri(path, params)
         @base_uri.dup.tap do |uri|
-          uri.path = File.join(uri.path, path)
+          uri.path = File.join(uri.path, path).chomp('/')
           uri.query = @default_parameters.merge((params[:query] || {})).to_query
-        end.to_s
+        end.request_uri
       end
       
       def request_body(body)
