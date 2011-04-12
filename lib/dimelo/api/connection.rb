@@ -1,6 +1,3 @@
-require 'net/http'
-require 'net/https'
-
 module Dimelo
   module API
     class Connection

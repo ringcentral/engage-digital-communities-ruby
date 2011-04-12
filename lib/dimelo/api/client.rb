@@ -1,8 +1,3 @@
-require 'active_support/core_ext/string'
-require 'active_support/core_ext/object'
-require 'uri'
-require 'net/http'
-
 module Dimelo
   module API
     class Client
