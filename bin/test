@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+puts 'loading environment...'
+require File.expand_path(File.join(File.dirname(__FILE__), '../../../../config/environment'))
+
+users_client = Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
+answers_client = Dimelo::API::Client.new('https://domain-test.answers.feedback20.com/api/1.0', 'access_token' => '02d60593cc5484d881eed2f7d8bb35b1')
+
+users = Dimelo::User.find(users_client)
+puts "user count: #{users.count}"
+
+user = Dimelo::User.find(1, users_client)
+questions = user.questions(answers_client)
+puts "question count: #{questions.count}"
+
+question = questions.first
+answers = question.answers
+puts "answer count: #{answers.count}"
