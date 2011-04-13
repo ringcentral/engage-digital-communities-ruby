@@ -30,7 +30,7 @@ module Dimelo
         initialize_client
       end
   
-      def perform(request, retry_count=0)
+      def perform(request, retry_count=1)
         start
         response = nil
         begin

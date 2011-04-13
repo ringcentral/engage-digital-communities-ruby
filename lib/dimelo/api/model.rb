@@ -84,7 +84,6 @@ module Dimelo
         # Inspired by https://github.com/svenfuchs/i18n/blob/master/lib/i18n/core_ext/string/interpolate.rb
         INTERPOLATION_PATTERN = /%\{(\w+)\}/ # matches placeholders like "%{foo}"
         def compute_path(criterias={})
-          puts "compute_path(criterias=#{criterias.inspect})"
           path.gsub(INTERPOLATION_PATTERN) do |match|
             criterias.delete($1.to_sym) || ''
           end
