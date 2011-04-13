@@ -23,6 +23,7 @@ module Dimelo
       end
       
       def request(method, path, params)
+        puts "#{method.to_s.upcase} #{request_uri(path, params)}"
         request_class = Net::HTTP.const_get(method.to_s.camelize)
         request_class.new(request_uri(path, params)).tap do |request|
           request.body = request_body(params[:body])

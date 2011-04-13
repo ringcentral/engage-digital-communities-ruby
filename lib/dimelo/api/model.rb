@@ -10,7 +10,7 @@ module Dimelo
         
         def path(*args)
           @path = args.first if args.any?
-          @path
+          @path ||= "/#{name.demodulize.pluralize.underscore}/%{id}"
         end
         
         def attribute(arg)
@@ -38,8 +38,10 @@ module Dimelo
           
           class_eval <<-EOS, __FILE__, __LINE__ + 1
             
-            def #{association}
-              @#{association} ||= #{foreign_class}.find({:#{foreign_key} => self.id}, @client).each do |instance|
+            def #{association}(client=nil)
+              # FIXME: clear cache if client change, or something like that
+              client ||= @client
+              @#{association} ||= #{foreign_class}.find({:#{foreign_key} => self.id}, client).each do |instance|
                 instance.#{foreign_reference} = self
               end
             end
@@ -60,8 +62,9 @@ module Dimelo
           
           class_eval <<-EOS, __FILE__, __LINE__ + 1
             
-            def #{association}
-              @#{association} ||= #{foreign_class}.find(self.#{foreign_key}, @client)
+            def #{association}(client=nil)
+              client ||= @client
+              @#{association} ||= #{foreign_class}.find(self.#{foreign_key}, client)
             end
             
           EOS
