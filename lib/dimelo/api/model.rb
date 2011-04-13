@@ -31,6 +31,42 @@ module Dimelo
           @submit_attributes ||= []
         end
         
+        def has_many(association, options={})
+          foreign_class = options[:class_name] || "#{name.gsub(/(\w+)$/, '')}#{association.to_s.singularize.camelize}"
+          foreign_reference = self.name.demodulize.underscore
+          foreign_key = "#{foreign_reference}_id"
+          
+          class_eval <<-EOS, __FILE__, __LINE__ + 1
+            
+            def #{association}
+              @#{association} ||= #{foreign_class}.find({:#{foreign_key} => self.id}, @client).each do |instance|
+                instance.#{foreign_reference} = self
+              end
+            end
+            
+            def #{association}=(items)
+              @#{association} = items.each{ |i| i.#{foreign_reference} = self }
+            end
+            
+          EOS
+          
+        end
+        
+        def belongs_to(association, options={})
+          attr_writer association
+          foreign_class = options[:class_name] || "#{name.gsub(/(\w+)$/, '')}#{association.to_s.camelize}"
+          foreign_reference = self.name.demodulize.underscore
+          foreign_key = "#{association}_id"
+          
+          class_eval <<-EOS, __FILE__, __LINE__ + 1
+            
+            def #{association}
+              @#{association} ||= #{foreign_class}.find(self.#{foreign_key}, @client)
+            end
+            
+          EOS
+        end
+        
         def find(*args)
           client = args.pop
           criterias = args.pop
@@ -48,6 +84,7 @@ module Dimelo
         # Inspired by https://github.com/svenfuchs/i18n/blob/master/lib/i18n/core_ext/string/interpolate.rb
         INTERPOLATION_PATTERN = /%\{(\w+)\}/ # matches placeholders like "%{foo}"
         def compute_path(criterias={})
+          puts "compute_path(criterias=#{criterias.inspect})"
           path.gsub(INTERPOLATION_PATTERN) do |match|
             criterias.delete($1.to_sym) || ''
           end
@@ -64,7 +101,7 @@ module Dimelo
         @errors = ActiveModel::Errors.new(self)
         self.client = client
         hash.each do |k,v|
-          self.send("#{k}=", v)
+          self.send("#{k}=", v) if self.respond_to?("#{k}=")
         end
       end
       
