@@ -74,23 +74,23 @@ describe Dimelo::API::Model do
     let(:client) { Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => 'foo') }
     
     it 'compute index path' do
-      client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {}}).and_return('[]')
+      client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {:offset=>0, :limit=>30}}).and_return('[]')
       User.find({:group_id => 42}, client)
     end
     
     it 'compute show path' do
-      client.should_receive(:transport).with(:get, '/groups/42/users/1', {:query => {}}).and_return('{}')
+      client.should_receive(:transport).with(:get, '/groups/42/users/1', {:query => {:offset=>0, :limit=>30}}).and_return('{}')
       User.find({:group_id => 42, :id => 1}, client)
     end
     
     it 'send extra criterias as query' do
-      client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {:order => 'foo', :egg => 'spam'}}).and_return('[]')
+      client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {:order => 'foo', :egg => 'spam', :offset=>0, :limit=>30}}).and_return('[]')
       User.find({:group_id => 42, :order => 'foo', :egg => 'spam'}, client)
     end
     
     it 'send the result to .parse' do
-      client.should_receive(:transport).and_return('JSON')
-      User.should_receive(:parse).with('JSON', client)
+      client.should_receive(:transport).at_least(1).times.and_return('JSON')
+      User.should_receive(:parse).at_least(1).times.with('JSON', client)
       User.find({:group_id => 42}, client)
     end
     

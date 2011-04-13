@@ -35,7 +35,9 @@ module Dimelo
           client = args.pop
           criterias = args.pop
           criterias = {:id => criterias} unless criterias.is_a?(Hash)
-          parse(client.transport(:get, compute_path(criterias), {:query => criterias}), client)
+          Dimelo::API::LazzyCollection.new(criterias) do |criterias|
+            parse(client.transport(:get, compute_path(criterias), {:query => criterias}), client)
+          end
         end
         
         def parse(document, client=nil)

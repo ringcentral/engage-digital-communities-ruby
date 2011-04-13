@@ -52,7 +52,7 @@ describe Dimelo::API::Client do
     it 'raise if response is not a 2XX' do
       expect{
         subject.transport(:get, '/check', {:query => {'access_token' => 'invalid'}})
-      }.to raise_error(Net::HTTPExceptions)
+      }.to raise_error(Dimelo::API::Error)
     end
     
   end
