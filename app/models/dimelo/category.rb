@@ -1,6 +1,8 @@
 module Dimelo
   class Category < Dimelo::API::Model
     
+    path '/category_groups/%{category_group_id}/categories/%{id}'
+    
     attributes :id, :category_group_id, :name, :description, :questions_count, :permalink, :picture
     alias :to_s :name
     
