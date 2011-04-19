@@ -19,7 +19,7 @@ module Dimelo
         response.value
         response.body
       rescue Net::HTTPExceptions => e
-        raise Error.new(response.body).tap{ |exc| exc.original_exception = e }
+        raise Error.new("#{method.to_s.upcase} #{path} - #{response.code} #{response.body}").tap{ |exc| exc.original_exception = e }
       end
       
       def request(method, path, params)
