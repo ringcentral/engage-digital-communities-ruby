@@ -1,1 +1,6 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '../../../../config/environment'))
+begin
+  require 'spec/autorun'
+rescue LoadError
+  require 'rspec'
+end
+require File.expand_path(File.dirname(__FILE__) + '/../lib/dimelo_api')

@@ -1,3 +1,5 @@
+require 'active_model'
+
 module Dimelo
   module API
     class Model  
