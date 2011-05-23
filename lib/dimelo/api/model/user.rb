@@ -7,6 +7,7 @@ module Dimelo
     has_many :memberships
     has_many :questions
     has_many :answers
+    has_many :feedbacks
     
     def avatar_url(size='normal')
       avatar.try(:[], size).try(:[], 'url')
