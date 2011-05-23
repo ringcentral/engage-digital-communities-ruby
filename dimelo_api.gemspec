@@ -21,5 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency('activesupport', '>= 3.0.0') #could probably be made less restrictive
   s.add_dependency('activemodel', '>= 3.0.0')   #could probably be made less restrictive
   s.add_development_dependency('rake') #rspec 1 or 2
-  s.add_development_dependency('rspec') #rspec 1 or 2
+  s.add_development_dependency('rspec-core', '2.6.0') #rspec 1 or 2
+  s.add_development_dependency('rspec', '2.6.0') #rspec 1 or 2
 end
