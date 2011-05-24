@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "dimelo/api"
+require "dimelo/api/version"
 
 Gem::Specification.new do |s|
   s.name        = "dimelo_api"

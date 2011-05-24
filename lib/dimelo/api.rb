@@ -16,8 +16,7 @@ module Dimelo
 
   module API
 
-    VERSION = File.read( File.join(File.dirname(__FILE__),'..', '..','VERSION') ).strip
-
+    autoload :VERSION,          'dimelo/api/version'
     autoload :Client,           'dimelo/api/client'
     autoload :Connection,       'dimelo/api/connection'
     autoload :Model,            'dimelo/api/model'
