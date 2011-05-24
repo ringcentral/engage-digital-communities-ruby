@@ -8,6 +8,7 @@ module Dimelo
   autoload :Category,       'dimelo/api/model/category'
   autoload :CategoryGroup,  'dimelo/api/model/category_group'
   autoload :Feedback,       'dimelo/api/model/feedback'
+  autoload :FeedbackComment,'dimelo/api/model/feedback_comment'
   autoload :Membership,     'dimelo/api/model/membership'
   autoload :PrivateMessage, 'dimelo/api/model/private_message'
   autoload :Question,       'dimelo/api/model/question'
