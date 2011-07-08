@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Dimelo::API::Client do
   
   subject do
-    Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
+    Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
   end
   
   describe '#request' do
@@ -26,7 +26,7 @@ describe Dimelo::API::Client do
     it 'join the path' do
       req = request(:path => '/check')
       uri = URI.parse(req.path)
-      uri.path.should == '/api/1.0/check'
+      uri.path.should == '/1.0/check'
     end
   
     it 'merge query' do

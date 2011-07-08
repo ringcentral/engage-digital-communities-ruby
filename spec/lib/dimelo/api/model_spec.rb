@@ -71,7 +71,7 @@ describe Dimelo::API::Model do
   
   describe '.find' do
     
-    let(:client) { Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => 'foo') }
+    let(:client) { Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => 'foo') }
     
     it 'compute index path' do
       client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {:offset=>0, :limit=>30}}).and_return('[]')
