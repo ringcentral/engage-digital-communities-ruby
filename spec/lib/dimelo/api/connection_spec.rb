@@ -17,6 +17,11 @@ describe Dimelo::API::Connection do
       Dimelo::API::Connection.from_uri(http_uri)
     end
     
+    it 'should support http options' do
+      Dimelo::API::Connection.should_receive(:new).with('example.com', 8080, :use_ssl => false, :timeout => 80)
+      Dimelo::API::Connection.from_uri(http_uri, :timeout => 80)
+    end
+
     it 'should reuse connections for same scheme/hosts/port' do
       first = Dimelo::API::Connection.from_uri(http_uri)
       second = Dimelo::API::Connection.from_uri(http_uri)

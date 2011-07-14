@@ -9,9 +9,11 @@ module Dimelo
       
       attr_accessor :base_uri, :default_parameters
       
-      def initialize(base_uri, default_parameters={})
+      def initialize(base_uri, options={})
         @base_uri = base_uri.is_a?(URI) ? base_uri : URI.parse(base_uri)
-        @default_parameters = default_parameters
+        options = options.with_indifferent_access
+        @http_options = options.delete(:http_options) || {}
+        @default_parameters = options
       end
       
       def transport(method, path, params={})
@@ -43,7 +45,7 @@ module Dimelo
       end
       
       def connection
-        @connection ||= Connection.from_uri(@base_uri)
+        @connection ||= Connection.from_uri(@base_uri, @http_options)
       end
       
     end

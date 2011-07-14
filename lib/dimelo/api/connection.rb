@@ -6,8 +6,9 @@ module Dimelo
       
       class << self
         
-        def from_uri(uri)
-          pool[uri_key(uri)] ||= new(uri.host, uri.port, :use_ssl => uri.scheme == 'https')
+        def from_uri(uri, options = {})
+          options.merge!(:use_ssl => uri.scheme == 'https')
+          pool[uri_key(uri)] ||= new(uri.host, uri.port, options)
         end
         
         private

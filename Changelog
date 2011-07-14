@@ -1,0 +1,2 @@
+# 0.0.4
+Support http_options for Client.new to be able to set dedicated timeout

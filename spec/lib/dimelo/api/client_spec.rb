@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Dimelo::API::Client do
   
   subject do
-    Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
+    Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf', :http_options => {:timeout => 80})
   end
   
   describe '#request' do
@@ -57,4 +57,22 @@ describe Dimelo::API::Client do
     
   end
   
+  describe '#default_parameters' do
+    it 'is not polluted by http_options' do
+      subject.default_parameters.should_not include('http_options')
+      subject.default_parameters.should_not include(:http_options)
+    end
+  end
+
+  describe '#connection' do
+
+    it 'returns a Connection' do
+      subject.send(:connection).should be_kind_of(Dimelo::API::Connection)
+    end
+
+    it 'supports http_options' do
+      Dimelo::API::Connection.should_receive(:from_uri).with(anything,hash_including(:timeout => 80))
+      subject.send(:connection)
+    end
+  end
 end
