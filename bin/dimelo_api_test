@@ -6,7 +6,9 @@ $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/../lib"
 require 'dimelo_api'
 
 users_client = Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
-answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => '02d60593cc5484d881eed2f7d8bb35b1')
+answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
+feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
+
 
 users = Dimelo::User.find(users_client)
 puts "user count: #{users.count}"
@@ -18,3 +20,8 @@ puts "question count: #{questions.count}"
 question = questions.first
 answers = question.answers
 puts "answer count: #{answers.count}"
+
+feedbacks = Dimelo::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
+puts "feedbacks count: #{feedbacks.count}"
+puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
+
