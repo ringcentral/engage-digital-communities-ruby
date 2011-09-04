@@ -9,5 +9,12 @@ module Dimelo
     belongs_to :user
     belongs_to :question
     
+    def admin_stamp
+      path = "#{compute_path(attributes)}/admin_stamp"
+      response = client.transport(:post, path)
+      self.attributes = Dimelo::API.decode_json(response)
+      errors.empty?
+    end
+    
   end
 end
