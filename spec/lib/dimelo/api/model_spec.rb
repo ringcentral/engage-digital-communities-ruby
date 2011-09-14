@@ -50,7 +50,7 @@ describe Dimelo::API::Model do
             },
             {
               "id": 2,
-              "firstname": 'Marjorie "Marge"',
+              "firstname": "Marjorie 'Marge'",
               "lastname": "Simpson"
             }
           ]

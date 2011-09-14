@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Dimelo::API::Client do
   
   subject do
-    Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf', :http_options => {:timeout => 80})
+    Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => ::ACCESS_TOKEN, :http_options => {:timeout => 80})
   end
   
   describe '#request' do
@@ -33,7 +33,7 @@ describe Dimelo::API::Client do
       req = request(:params => {:query => {:foo => 42}})
       uri = URI.parse(req.path)
       params = CGI.parse(uri.query)
-      params.should == {'foo' => %w(42), 'access_token' => %w(0efeca9dfb379d7b27c2575ca3d347bf)}
+      params.should == {'foo' => %w(42), 'access_token' => [::ACCESS_TOKEN] }
     end
     
     it 'provide body' do
