@@ -12,5 +12,12 @@ module Dimelo
     belongs_to :category
     has_many :answers
     
+    def publish
+      path = "#{compute_path(attributes)}/publish"
+      response = client.transport(:post, path)
+      self.attributes = Dimelo::API.decode_json(response)
+      errors.empty?
+    end
+    
   end
 end
