@@ -2,7 +2,7 @@ require 'net/https'
 module Dimelo
   module API
     
-    class Error < Exception
+    class Error < StandardError
       attr_accessor :original_exception
     end
     
