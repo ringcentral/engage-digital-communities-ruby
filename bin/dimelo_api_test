@@ -5,10 +5,12 @@ require 'bundler'
 $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/../lib"
 require 'dimelo_api'
 
-users_client = Dimelo::API::Client.new('https://domain-test.users.dimelo.com/api/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
-answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
-feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => '0efeca9dfb379d7b27c2575ca3d347bf')
-
+users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.info:4433/1.0', 'access_token' => '6265b6a77b826145b102985eecb0b9da')
+answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.info:4431/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
+feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.info:4432/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
+#users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '6265b6a77b826145b102985eecb0b9da')
+#answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
+#feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.info/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
 
 users = Dimelo::User.find(users_client)
 puts "user count: #{users.count}"
