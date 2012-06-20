@@ -1,5 +1,6 @@
 module Dimelo
   class Answer < Dimelo::API::Model
+    include ::Dimelo::Api::Common::Publishable
     
     path '/questions/%{question_id}/answers/%{id}'
     
@@ -11,13 +12,6 @@ module Dimelo
     
     def admin_stamp
       path = "#{compute_path(attributes)}/admin_stamp"
-      response = client.transport(:post, path)
-      self.attributes = Dimelo::API.decode_json(response)
-      errors.empty?
-    end
-    
-    def publish
-      path = "#{compute_path(attributes)}/publish"
       response = client.transport(:post, path)
       self.attributes = Dimelo::API.decode_json(response)
       errors.empty?
