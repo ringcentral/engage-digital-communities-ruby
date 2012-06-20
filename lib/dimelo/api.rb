@@ -35,6 +35,12 @@ module Dimelo
       end
       
     end
+
+    module Common
+
+      autoload :Publishable, 'dimelo/api/common/publishable'
+
+    end
     
   end
 end

@@ -1,5 +1,5 @@
 module Dimelo
-  module Api
+  module API
     module Common
       module Publishable
 

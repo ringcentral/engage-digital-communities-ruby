@@ -1,6 +1,6 @@
 module Dimelo
   class Answer < Dimelo::API::Model
-    include ::Dimelo::Api::Common::Publishable
+    include ::Dimelo::API::Common::Publishable
     
     path '/questions/%{question_id}/answers/%{id}'
     

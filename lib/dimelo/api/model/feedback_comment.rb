@@ -1,6 +1,6 @@
 module Dimelo
   class FeedbackComment < Dimelo::API::Model
-    include ::Dimelo::Api::Common::Publishable
+    include ::Dimelo::API::Common::Publishable
     
     STATUS_COMMENT_PATH = '/feedbacks/%{feedback_id}/status_comments/%{id}'
     COMMENT_PATH = '/feedbacks/%{feedback_id}/comments/%{id}'
