@@ -17,6 +17,7 @@ module Dimelo
       avatar.try(:[], size).try(:[], 'url')
     end
 
+    # Blocks the specified user
     def block
       path = "#{compute_path(attributes)}/block"
       response = client.transport(:post, path)
@@ -24,6 +25,7 @@ module Dimelo
       errors.empty?
     end
 
+    # Unblocks the specified user
     def unblock
       path = "#{compute_path(attributes)}/unblock"
       response = client.transport(:post, path)
