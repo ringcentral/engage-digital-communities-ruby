@@ -3,7 +3,7 @@ require 'active_support/core_ext'
 require 'uri'
 
 module Dimelo
-  
+
   autoload :Answer,         'dimelo/api/model/answer'
   autoload :Category,       'dimelo/api/model/category'
   autoload :CategoryGroup,  'dimelo/api/model/category_group'
@@ -25,15 +25,15 @@ module Dimelo
     autoload :LazzyCollection,  'dimelo/api/lazzy_collection'
 
     class << self
-      
+
       def decode_json(document)
         ActiveSupport::JSON.decode(document)
       end
-      
+
       def encode_json(object)
         ActiveSupport::JSON.encode(object)
       end
-      
+
     end
 
     module Common
@@ -41,6 +41,6 @@ module Dimelo
       autoload :Publishable, 'dimelo/api/common/publishable'
 
     end
-    
+
   end
 end
