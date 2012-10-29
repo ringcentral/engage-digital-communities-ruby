@@ -2,16 +2,13 @@ require 'active_model'
 
 module Dimelo
   module API
-    class Model
-
+    class BaseModel
       extend ActiveModel::Translation
       extend ActiveModel::Naming
       include ActiveModel::Validations
+    end
 
-      def self.append_features(base)
-        base.class_eval 'alias :method_missing_orig :method_missing'
-        super
-      end
+    class Model < BaseModel
 
       class << self
 
@@ -135,7 +132,7 @@ module Dimelo
           if self.respond_to? "#{k}="
             self.send("#{k}=", value)
           else
-            warn("Unknown field #{k} for object #{self.inspect}")
+            warn("Unknown field or method #{k} for object #{self.inspect}")
           end
         end
       end
@@ -202,14 +199,6 @@ module Dimelo
 
       def warn(message)
         defined?(Rails) ? Rails.logger.warn(message) : STDERR.puts(message)
-      end
-
-      def method_missing(method, *args, &block)
-        begin
-          method_missing_orig(method, args, block)
-        rescue NoMethodError => e
-          warn("Warning: Unknown field or method #{method} for object #{self.inspect}\nBacktrace:\n#{e.backtrace.join("\n")}")
-        end
       end
 
     end
