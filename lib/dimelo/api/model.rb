@@ -105,7 +105,11 @@ module Dimelo
         @errors = ActiveModel::Errors.new(self)
         self.client = client
         hash.each do |k,v|
-          self.send("#{k}=", v) if self.respond_to?("#{k}=")
+          if self.respond_to?("#{k}=")
+            self.send("#{k}=", v)
+          else
+            warn("Unknown field #{k} for object #{self.inspect}")
+          end
         end
       end
 
@@ -122,8 +126,12 @@ module Dimelo
       end
 
       def attributes=(hash)
-        hash.each do |attr, value|
-          self.send("#{attr}=", value)
+        hash.each do |k, value|
+          if self.respond_to? "#{k}="
+            self.send("#{k}=", value)
+          else
+            warn("Unknown field #{k} for object #{self.inspect}")
+          end
         end
       end
 
@@ -185,6 +193,14 @@ module Dimelo
 
       def to_json
         Dimelo::API.encode_json(self.attributes)
+      end
+
+      def method_missing(method, *args, &block)
+        begin
+          super
+        rescue NoMethodError => e
+          warn("Unknown field or method #{method} for object #{self.inspect}")
+        end
       end
 
     end

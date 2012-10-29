@@ -12,18 +12,20 @@ feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo
 #answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
 #feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.info/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
 
-users = Dimelo::User.find(users_client)
-puts "user count: #{users.count}"
 
 user = Dimelo::User.find(1, users_client)
 questions = user.questions(answers_client)
 puts "question count: #{questions.count}"
 
-question = questions.first
-answers = question.answers
-puts "answer count: #{answers.count}"
+questions.each do |question, i|
+  answers = question.answers
+  puts "#{i} of #{questions.count} => answer count: #{answers.count}"
+  answers.each do |answer|
+    pp answer
+  end
+end
 
-feedbacks = Dimelo::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
-puts "feedbacks count: #{feedbacks.count}"
-puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
+# feedbacks = Dimelo::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
+# puts "feedbacks count: #{feedbacks.count}"
+# puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
 
