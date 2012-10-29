@@ -2,13 +2,10 @@ require 'active_model'
 
 module Dimelo
   module API
-    class BaseModel
+    class Model
       extend ActiveModel::Translation
       extend ActiveModel::Naming
       include ActiveModel::Validations
-    end
-
-    class Model < BaseModel
 
       class << self
 
