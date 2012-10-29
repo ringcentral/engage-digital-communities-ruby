@@ -199,9 +199,10 @@ module Dimelo
         defined?(Rails) ? Rails.logger.warn(message) : STDERR.puts(message)
       end
 
+      alias_method :method_missing, :parent_method_missing
       def method_missing(method, *args, &block)
         begin
-          super
+          parent_method_missing
         rescue NoMethodError => e
           warn("Warning: Unknown field or method #{method} for object #{self.inspect}\nBacktrace:\n#{e.backtrace.join("\n")}")
         end
