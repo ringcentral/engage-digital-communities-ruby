@@ -195,6 +195,10 @@ module Dimelo
         Dimelo::API.encode_json(self.attributes)
       end
 
+      def warn(message)
+        defined?(Rails) ? Rails.logger.warn(message) : STDERR.puts(message)
+      end
+
       def method_missing(method, *args, &block)
         begin
           super
