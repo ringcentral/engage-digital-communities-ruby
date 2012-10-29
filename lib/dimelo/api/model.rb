@@ -199,7 +199,7 @@ module Dimelo
         begin
           super
         rescue NoMethodError => e
-          warn("Unknown field or method #{method} for object #{self.inspect}")
+          warn("Warning: Unknown field or method #{method} for object #{self.inspect}\nBacktrace:\n#{e.backtrace.join("\n")}")
         end
       end
 
