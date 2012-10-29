@@ -4,6 +4,7 @@ require 'rubygems'
 require 'bundler'
 $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/../lib"
 require 'dimelo_api'
+require 'pp'
 
 users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.info:4433/1.0', 'access_token' => '6265b6a77b826145b102985eecb0b9da')
 answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.info:4431/1.0', 'access_token' => 'a5f3f2546d2a6e1e8df68ada07911e35')
@@ -21,11 +22,11 @@ questions.each do |question, i|
   answers = question.answers
   puts "#{i} of #{questions.count} => answer count: #{answers.count}"
   answers.each do |answer|
-    pp answer
+    answer.question_flow_state = "lol"
   end
 end
 
-# feedbacks = Dimelo::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
-# puts "feedbacks count: #{feedbacks.count}"
-# puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
+feedbacks = Dimelo::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
+puts "feedbacks count: #{feedbacks.count}"
+puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
 

@@ -8,6 +8,11 @@ module Dimelo
       extend ActiveModel::Naming
       include ActiveModel::Validations
 
+      def self.append_features(base)
+        base.class_eval 'alias :method_missing_orig :method_missing'
+        super
+      end
+
       class << self
 
         def path(*args)
@@ -199,10 +204,9 @@ module Dimelo
         defined?(Rails) ? Rails.logger.warn(message) : STDERR.puts(message)
       end
 
-      alias_method :method_missing, :parent_method_missing
       def method_missing(method, *args, &block)
         begin
-          parent_method_missing
+          method_missing_orig(method, args, block)
         rescue NoMethodError => e
           warn("Warning: Unknown field or method #{method} for object #{self.inspect}\nBacktrace:\n#{e.backtrace.join("\n")}")
         end
