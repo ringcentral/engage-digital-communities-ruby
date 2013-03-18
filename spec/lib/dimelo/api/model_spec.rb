@@ -96,6 +96,34 @@ describe Dimelo::API::Model do
 
   end
 
+  describe '#tracked_attributes' do
+
+    before :each do
+      class Article < Dimelo::API::Model
+        attributes :id, :category_ids
+      end
+    end
+
+    after :each do
+      Object.send(:remove_const, 'Article')
+    end
+
+    it 'should returns only mass-assigned attributes' do
+      Article.new(:category_ids => nil).tracked_attributes.should == [:category_ids]
+    end
+
+    it 'should works on single assigning' do
+      article = Article.new
+      article.category_ids = nil
+      article.tracked_attributes.should == [:category_ids]
+    end
+
+    it 'should returns nothing if not set' do
+      Article.new.tracked_attributes.should == []
+    end
+
+  end
+
   describe '.submit_attributes' do
 
     before :each do
@@ -118,7 +146,7 @@ describe Dimelo::API::Model do
     end
 
     it 'sends empty string is precised' do
-      Article.new(:id => 1, :category_ids => '').submit_attributes.should == {:id => 1, :category_ids => ''}
+      Article.new(:id => 1, :category_ids => nil).submit_attributes.should == {:id => 1, :category_ids => nil}
     end
 
   end

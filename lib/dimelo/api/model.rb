@@ -17,7 +17,12 @@ module Dimelo
         def attribute(arg)
           @attributes ||= []
           @attributes << arg
-          attr_accessor(arg)
+          attr_reader(arg)
+          class_eval "
+          def #{arg}=(val)
+            @tracked_attributes << :#{arg}
+            @#{arg} = val
+          end"
         end
 
         def attributes(*args)
@@ -96,12 +101,13 @@ module Dimelo
       end
 
       attr_accessor :client
-      attr_reader :errors
+      attr_reader :errors, :tracked_attributes
 
       delegate :compute_path, :to => 'self.class'
 
       def initialize(hash={}, client=nil)
         @errors = ActiveModel::Errors.new(self)
+        @tracked_attributes = []
         self.client = client
         hash.each do |k,v|
           if self.respond_to?("#{k}=")
@@ -134,12 +140,12 @@ module Dimelo
         end
       end
 
-      def existing_submit_attributes
-        self.class.submit_attributes.map{ |key| [key, self.send(key)] }.select { |array| not array.last.nil? }
+      def tracked_submit_attributes
+        @tracked_attributes & self.class.submit_attributes
       end
 
       def submit_attributes
-        Hash[existing_submit_attributes]
+        Hash[tracked_submit_attributes.map{ |key| [key, self.send(key)] }]
       end
 
       def new_record?
