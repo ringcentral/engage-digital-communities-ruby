@@ -134,8 +134,12 @@ module Dimelo
         end
       end
 
+      def existing_submit_attributes
+        self.class.submit_attributes.map{ |key| [key, self.send(key)] }.select { |array| not array.last.nil? }
+      end
+
       def submit_attributes
-        Hash[self.class.submit_attributes.map{ |key| [key, self.send(key)] }]
+        Hash[existing_submit_attributes]
       end
 
       def new_record?
