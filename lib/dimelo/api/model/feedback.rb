@@ -7,7 +7,7 @@ module Dimelo
                :comments_count, :positive_votes_count, :negative_votes_count,
                :permalink, :created_at, :updated_at, :ipaddr
 
-    submit_attributes :title, :body, :category_ids, :user_id
+    submit_attributes :title, :body, :body_format, :category_ids, :user_id
 
     belongs_to :user
     belongs_to :category
