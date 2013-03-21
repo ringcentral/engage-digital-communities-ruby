@@ -5,7 +5,7 @@ module Dimelo
     path '/questions/%{question_id}/answers/%{id}'
 
     attributes :id, :body, :body_format, :flow_state, :user_id, :permalink, :created_at, :updated_at, :question_id, :comments_count, :ipaddr, :question_flow_state
-    submit_attributes :body, :user_id, :question_id
+    submit_attributes :body, :body_format, :user_id, :question_id
 
     belongs_to :user
     belongs_to :question

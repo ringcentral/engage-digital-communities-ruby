@@ -7,7 +7,7 @@ module Dimelo
                :created_at, :updated_at, :answers_count,
                :usefulnesses_yes_count, :usefulnesses_no_count, :ipaddr
 
-    submit_attributes :title, :body, :category_ids, :user_id
+    submit_attributes :title, :body, :body_format, :category_ids, :user_id
 
     belongs_to :user
     belongs_to :category
