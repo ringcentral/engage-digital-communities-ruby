@@ -23,5 +23,12 @@ module Dimelo
       self.attributes = Dimelo::API.decode_json(response)
       errors.empty?
     end
+
+    def unstamp
+      path = "#{compute_path(attributes)}/stamp"
+      response = client.transport(:delete, path)
+      self.attributes = Dimelo::API.decode_json(response)
+      errors.empty?
+    end
   end
 end
