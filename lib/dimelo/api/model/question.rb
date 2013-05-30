@@ -1,5 +1,6 @@
 module Dimelo
   class Question < Dimelo::API::Model
+    include ::Dimelo::API::Common::Openable
     include ::Dimelo::API::Common::Publishable
 
     attributes :id, :title, :body, :body_format, :flow_state, :score, :user_id,

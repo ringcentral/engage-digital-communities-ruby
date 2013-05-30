@@ -38,6 +38,7 @@ module Dimelo
 
     module Common
 
+      autoload :Openable, 'dimelo/api/common/openable'
       autoload :Publishable, 'dimelo/api/common/publishable'
 
     end
