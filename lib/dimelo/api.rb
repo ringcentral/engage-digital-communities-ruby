@@ -1,5 +1,8 @@
 require 'active_support/json'
 require 'active_support/core_ext'
+require 'faraday'
+require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 require 'uri'
 
 module Dimelo

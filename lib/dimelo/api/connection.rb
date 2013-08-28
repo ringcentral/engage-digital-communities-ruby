@@ -3,71 +3,67 @@ require 'net/https'
 module Dimelo
   module API
     class Connection
-      
+
       class << self
-        
+
         def from_uri(uri, options = {})
           options.merge!(:use_ssl => uri.scheme == 'https')
-          pool[uri_key(uri)] ||= new(uri.host, uri.port, options)
+          pool[uri_key(uri)] ||= new(uri_key(uri), options)
         end
-        
+
         private
-        
+
         def uri_key(uri)
           "#{uri.scheme}://#{uri.host}:#{uri.port}"
         end
-        
+
         def pool
           @pool ||= {}
         end
-        
+
       end
-      
-      def initialize(host, port, options={})
-        @occupied = false
-        @host = host
-        @port = port
+
+      def initialize(url, options={})
+        @url = url
         @http_options = options
         initialize_client
       end
-  
-      def perform(request, retry_count=1)
-        start
-        response = nil
-        begin
-          response = @client.request(request)
-          return response
-        ensure
-          unless response && @client.send(:keep_alive?, request, response)
-            @client.finish if @client.started?
-          end
-        end
-      rescue Net::HTTPError, SystemCallError, TimeoutError, OpenSSL::SSL::SSLError, EOFError => e
-        retry_count -= 1
-        initialize_client
-        retry if retry_count >= 0
-        raise
-      end
-  
-      private
-  
-      def start
-        @client.start unless @client.started?
-      end
-  
-      def initialize_client
-        @client = Net::HTTP.new(@host, @port)
-        @client.read_timeout = @http_options[:timeout] || 10
-        @client.open_timeout = @http_options[:timeout] || 10
-        @client.close_on_empty_response = false
 
-        if @client.use_ssl = @http_options[:use_ssl]
-          @client.verify_mode = OpenSSL::SSL::VERIFY_NONE
-          @client.verify_depth = 5
+      def perform(method, uri, body="")
+        @client.send(method) do |req|
+          req.url uri
+          req.body = body
         end
       end
-    
+
+      private
+
+      def timeout
+        @http_options[:timeout] || 10
+      end
+
+      def client_options
+        {}.tap do |opts|
+          opts[:request] = request_options
+          opts[:ssl] = ssl_options if @http_options[:use_ssl]
+        end
+      end
+
+      def request_options
+        { timeout: timeout, open_timeout: timeout }
+      end
+
+      def ssl_options
+        { verify_mode: OpenSSL::SSL::VERIFY_NONE, verify_depth: 5 }
+      end
+
+      def initialize_client
+        @client = Faraday.new(@url, client_options) do |faraday|
+          faraday.adapter :typhoeus
+        end
+      end
+
     end
-    
+
   end
 end

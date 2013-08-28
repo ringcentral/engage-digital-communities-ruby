@@ -1,4 +1,3 @@
-require 'net/https'
 module Dimelo
   module API
 
@@ -26,18 +25,17 @@ module Dimelo
       end
 
       def transport(method, path, params={})
-        response = connection.perform(request(method, path, params))
-        response.value
-        response.body
-      rescue Net::HTTPExceptions => e
-        raise Error.new("#{method.to_s.upcase} #{path} - #{response.code} #{response.body}").tap{ |exc| exc.original_exception = e }
+        response = connection.perform(*request(method, path, params))
+
+        if response.success?
+          response.body
+        else
+          raise Error.new("#{method.to_s.upcase} #{path} - #{response.status} #{response.body}")
+        end
       end
 
       def request(method, path, params)
-        request_class = Net::HTTP.const_get(method.to_s.camelize)
-        request_class.new(request_uri(path, params)).tap do |request|
-          request.body = request_body(params[:body])
-        end
+        [method, request_uri(path, params), request_body(params[:body])]
       end
 
       private
