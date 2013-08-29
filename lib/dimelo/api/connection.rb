@@ -59,6 +59,7 @@ module Dimelo
 
       def initialize_client
         @client = Faraday.new(@url, client_options) do |faraday|
+          faraday.request :url_encoded
           faraday.adapter :typhoeus
         end
       end
