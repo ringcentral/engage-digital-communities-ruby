@@ -3,7 +3,11 @@ require 'spec_helper'
 describe Dimelo::API::Model do
 
   class User < Dimelo::API::Model
-    path '/groups/%{group_id}/users/%{id}'
+    path 'groups/%{group_id}/users/%{id}'
+    attributes :id, :firstname, :lastname
+  end
+
+  class BaseUser < Dimelo::API::Model
     attributes :id, :firstname, :lastname
   end
 
@@ -69,22 +73,35 @@ describe Dimelo::API::Model do
 
   end
 
+  describe '.path' do
+    let(:user) { BaseUser.new }
+
+    it 'should not have leading and trailling "/" to not override path_prefix' do
+      user.compute_path.should == 'base_users'
+    end
+
+    it 'should work when computed with criteria' do
+      user.compute_path(:id => 1).should == 'base_users/1'
+    end
+
+  end
+
   describe '.find' do
 
     let(:client) { Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => 'foo') }
 
     it 'compute index path' do
-      client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {:offset=>0, :limit=>30}}).and_return('[]')
+      client.should_receive(:transport).with(:get, 'groups/42/users', {:offset=>0, :limit=>30}).and_return('[]')
       User.find({:group_id => 42}, client)
     end
 
     it 'compute show path' do
-      client.should_receive(:transport).with(:get, '/groups/42/users/1', {:query => {:offset=>0, :limit=>30}}).and_return('{}')
+      client.should_receive(:transport).with(:get, 'groups/42/users/1', {:offset=>0, :limit=>30}).and_return('{}')
       User.find({:group_id => 42, :id => 1}, client)
     end
 
-    it 'send extra criterias as query' do
-      client.should_receive(:transport).with(:get, '/groups/42/users/', {:query => {:order => 'foo', :egg => 'spam', :offset=>0, :limit=>30}}).and_return('[]')
+    it 'send extra criterias as payload' do
+      client.should_receive(:transport).with(:get, 'groups/42/users', {:order => 'foo', :egg => 'spam', :offset=>0, :limit=>30}).and_return('[]')
       User.find({:group_id => 42, :order => 'foo', :egg => 'spam'}, client)
     end
 

@@ -8,17 +8,17 @@ describe Dimelo::API::Connection do
     let(:https_uri) { URI.parse('https://example.com:8080/foo/bar?egg=spam')}
 
     it 'should infer :use_ssl => true from the scheme' do
-      Dimelo::API::Connection.should_receive(:new).with('https://example.com:8080', :use_ssl => true)
+      Dimelo::API::Connection.should_receive(:new).with('https://example.com:8080/foo/bar?egg=spam', :use_ssl => true)
       Dimelo::API::Connection.from_uri(https_uri)
     end
 
     it 'should infer :use_ssl => false from the scheme' do
-      Dimelo::API::Connection.should_receive(:new).with('http://example.com:8080', :use_ssl => false)
+      Dimelo::API::Connection.should_receive(:new).with('http://example.com:8080/foo/bar?egg=spam', :use_ssl => false)
       Dimelo::API::Connection.from_uri(http_uri)
     end
 
     it 'should support http options' do
-      Dimelo::API::Connection.should_receive(:new).with('http://example.com:8080', :use_ssl => false, :timeout => 80)
+      Dimelo::API::Connection.should_receive(:new).with('http://example.com:8080/foo/bar?egg=spam', :use_ssl => false, :timeout => 80)
       Dimelo::API::Connection.from_uri(http_uri, :timeout => 80)
     end
 
@@ -30,36 +30,61 @@ describe Dimelo::API::Connection do
 
   end
 
-  describe 'HTTP' do
+  describe '#perform' do
+
+    context 'HTTP' do
+
+      subject do
+        Dimelo::API::Connection.new('www.google.fr')
+      end
+
+      let(:request) { [:get, 'http://www.google.fr/'] }
+
+      it 'works' do
+        response = subject.perform(*request)
+        response.body.should_not be_nil
+        response.body.should_not be_empty
+        response.should be_success
+      end
+
+    end
+
+    context 'HTTPS' do
+
+      subject do
+        Dimelo::API::Connection.new('github.com:443', :use_ssl => true)
+      end
+
+      let(:request) { [:get, 'https://github.com/'] }
+
+      it 'works' do
+        response = subject.perform(*request)
+        response.body.should_not be_nil
+        response.body.should_not be_empty
+        response.should be_success
+      end
+
+    end
 
     subject do
-      Dimelo::API::Connection.new('www.google.fr')
+      Dimelo::API::Connection.new('github.com:443')
     end
 
-    let(:request) { [:get, 'http://www.google.fr/'] }
+    let(:file) { Faraday::UploadIO.new(File.expand_path('../../../../fixtures/files/logo.jpg', __FILE__), 'image/jpeg') }
 
-    it 'works' do
-      response = subject.perform(*request)
-      response.body.should_not be_nil
-      response.body.should_not be_empty
-      response.should be_success
+    it 'sends multipart request with attachment' do
+      response = subject.perform(:put, 'http://www.google.com', {:file => file})
+      response.env[:request_headers]["Content-Type"].should include 'multipart/form-data'
     end
 
-  end
-
-  describe 'HTTPS' do
-
-    subject do
-      Dimelo::API::Connection.new('github.com:443', :use_ssl => true)
+    it 'sends multipart when containing attachment param' do
+      response = subject.perform(:put, 'http://www.google.com', {:file => file, :q => 'hello'})
+      response.env[:request_headers]["Content-Type"].should include 'multipart/form-data'
     end
 
-    let(:request) { [:get, 'https://github.com/'] }
-
-    it 'works' do
-      response = subject.perform(*request)
-      response.body.should_not be_nil
-      response.body.should_not be_empty
-      response.should be_success
+    it 'should sends form urlencoded without attachment' do
+      response = subject.perform(:put, 'http://www.google.com', {:q => 'hello'})
+      response.env[:request_headers]["Content-Type"].should == 'application/x-www-form-urlencoded'
     end
 
   end

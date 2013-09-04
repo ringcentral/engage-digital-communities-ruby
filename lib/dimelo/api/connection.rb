@@ -8,7 +8,7 @@ module Dimelo
 
         def from_uri(uri, options = {})
           options.merge!(:use_ssl => uri.scheme == 'https')
-          pool[uri_key(uri)] ||= new(uri_key(uri), options)
+          pool[uri_key(uri)] ||= new(uri.to_s, options)
         end
 
         private
@@ -29,11 +29,8 @@ module Dimelo
         initialize_client
       end
 
-      def perform(method, uri, body="")
-        @client.send(method) do |req|
-          req.url uri
-          req.body = body
-        end
+      def perform(method, uri, payload={})
+        @client.send(method, uri, payload)
       end
 
       private
@@ -59,8 +56,9 @@ module Dimelo
 
       def initialize_client
         @client = Faraday.new(@url, client_options) do |faraday|
+          faraday.request :multipart
           faraday.request :url_encoded
-          faraday.adapter :typhoeus
+          faraday.adapter Faraday.default_adapter #adapter should be last in the list https://github.com/lostisland/faraday/issues/161
         end
       end
 

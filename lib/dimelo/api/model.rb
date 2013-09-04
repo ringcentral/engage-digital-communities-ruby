@@ -11,7 +11,7 @@ module Dimelo
 
         def path(*args)
           @path = args.first if args.any?
-          @path ||= "/#{name.demodulize.pluralize.underscore}/%{id}"
+          @path ||= "#{name.demodulize.pluralize.underscore}/%{id}"
         end
 
         def attribute(arg)
@@ -81,7 +81,7 @@ module Dimelo
           criterias = args.pop
           criterias = {:id => criterias} unless criterias.is_a?(Hash)
           Dimelo::API::LazzyCollection.new(criterias) do |criterias|
-            parse(client.transport(:get, compute_path(criterias), {:query => criterias}), client)
+            parse(client.transport(:get, compute_path(criterias), criterias), client)
           end
         end
 
@@ -95,7 +95,7 @@ module Dimelo
         def compute_path(criterias={})
           path.gsub(INTERPOLATION_PATTERN) do |match|
             criterias.delete($1.to_sym) || ''
-          end
+          end.chomp '/'
         end
 
       end
@@ -163,7 +163,7 @@ module Dimelo
       def create
         attrs = submit_attributes
         path = compute_path(attrs)
-        response = client.transport(:post, path, :body => attrs)
+        response = client.transport(:post, path, attrs)
         self.attributes = Dimelo::API.decode_json(response)
         id.present?
       end
@@ -171,7 +171,7 @@ module Dimelo
       def update
         attrs = submit_attributes
         path = compute_path(attributes)
-        response = client.transport(:put, path, :body => attrs)
+        response = client.transport(:put, path, attrs)
         self.attributes = Dimelo::API.decode_json(response)
         errors.empty?
       end

@@ -8,6 +8,7 @@ require 'uri'
 module Dimelo
 
   autoload :Answer,         'dimelo/api/model/answer'
+  autoload :Attachment,     'dimelo/api/model/attachment'
   autoload :Category,       'dimelo/api/model/category'
   autoload :CategoryGroup,  'dimelo/api/model/category_group'
   autoload :Feedback,       'dimelo/api/model/feedback'

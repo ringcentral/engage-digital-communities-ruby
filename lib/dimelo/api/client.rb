@@ -24,8 +24,8 @@ module Dimelo
         Dimelo::API.decode_json(transport(:get, 'config'))
       end
 
-      def transport(method, path, params={})
-        response = connection.perform(*request(method, path, params))
+      def transport(method, path, payload={})
+        response = connection.perform(method, path, default_parameters.merge(payload))
 
         if response.success?
           response.body
@@ -34,21 +34,12 @@ module Dimelo
         end
       end
 
-      def request(method, path, params)
-        [method, request_uri(path, params), request_body(params[:body])]
-      end
-
       private
 
       def request_uri(path, params)
         @base_uri.dup.tap do |uri|
           uri.path = File.join(uri.path, path).chomp('/')
-          uri.query = @default_parameters.merge((params[:query] || {})).to_query
         end.request_uri
-      end
-
-      def request_body(body)
-        body.is_a?(Hash) ? body.to_query : body.to_s
       end
 
       def connection
