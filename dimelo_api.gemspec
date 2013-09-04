@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency('activesupport', '>= 3.0.0') #could probably be made less restrictive
   s.add_dependency('activemodel', '>= 3.0.0')   #could probably be made less restrictive
   s.add_dependency('faraday')
-  s.add_dependency('typhoeus')
   s.add_development_dependency('debugger')
   s.add_development_dependency('rake') #rspec 1 or 2
   s.add_development_dependency('rspec') #rspec 1 or 2
