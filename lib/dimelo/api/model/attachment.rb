@@ -1,22 +1,44 @@
 module Dimelo
   class Attachment < Dimelo::API::Model
-    QUESTION_PATH = 'questions/%{question_id}/attachments/%{id}'
-    ANSWER_PATH = 'questions/%{question_id}/answers/%{answer_id}/attachments/%{id}'
+    attributes :id, :file, :original, :question_id
+  end
 
-    path QUESTION_PATH
+  class AnswerAttachment < Attachment
+    path 'questions/%{question_id}/answers/%{answer_id}/attachments/%{id}'
+
+    attributes :id, :file, :original, :answer_id, :question_id
+
+    belongs_to :answer
+
+    submit_attributes :file, :question_id, :answer_id
+  end
+
+  class FeedbackCommentAttachment < Attachment
+    path 'feedbacks/%{feedback_id}/comments/%{comment_id}/attachments/%{id}'
+
+    attributes :id, :file, :original, :feedback_id, :comment_id
+    belongs_to :feedback_comment
+
+    submit_attributes :file, :question_id, :answer_id
+  end
+
+  class QuestionAttachment < Attachment
+    path 'questions/%{question_id}/attachments/%{id}'
 
     attributes :id, :file, :original, :question_id
 
     belongs_to :question
 
     submit_attributes :file, :question_id
+  end
 
-    # hack : if criterias includes answer_id we use ANSWER_PATH
-    def self.compute_path(criterias={})
-      path(ANSWER_PATH) if criterias.has_key? :answer_id
-      super
-    ensure
-      path(QUESTION_PATH)
-    end
+  class FeedbackAttachment < Attachment
+    path 'feedbacks/%{feedback_id}/attachments/%{id}'
+
+    attributes :id, :file, :original, :feedback_id
+
+    belongs_to :question
+
+    submit_attributes :file, :feedback_id
   end
 end

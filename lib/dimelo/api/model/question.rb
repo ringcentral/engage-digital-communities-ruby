@@ -13,7 +13,7 @@ module Dimelo
     belongs_to :user
     belongs_to :category
     has_many :answers
-    has_many :attachments
+    has_many :question_attachments
 
   end
 end

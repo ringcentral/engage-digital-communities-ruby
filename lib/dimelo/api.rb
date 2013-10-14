@@ -16,6 +16,13 @@ module Dimelo
   autoload :Question,       'dimelo/api/model/question'
   autoload :User,           'dimelo/api/model/user'
 
+  # Attachments
+  autoload :AnswerAttachment,           'dimelo/api/model/attachment'
+  autoload :CommentAttachment,          'dimelo/api/model/attachment'
+  autoload :FeedbackAttachment,         'dimelo/api/model/attachment'
+  autoload :FeedbackCommentAttachment,  'dimelo/api/model/attachment'
+  autoload :QuestionAttachment,         'dimelo/api/model/attachment'
+
   module API
 
     autoload :VERSION,          'dimelo/api/version'

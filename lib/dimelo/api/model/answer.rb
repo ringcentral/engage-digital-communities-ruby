@@ -13,6 +13,8 @@ module Dimelo
     belongs_to :user
     belongs_to :question
 
+    has_many :answer_attachments
+
     def admin_stamp
       path = "#{compute_path(attributes)}/admin_stamp"
       response = client.transport(:post, path)
