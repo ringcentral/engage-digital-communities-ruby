@@ -9,7 +9,7 @@ describe Dimelo::API::Client do
   describe '#transport' do
 
     it 'return an the response body' do
-      subject.transport(:get, 'check').should == %Q({\n  "success": true\n})
+      subject.transport(:get, 'check').should == %Q({"success":true})
     end
 
     it 'raise if response is not a 2XX' do
