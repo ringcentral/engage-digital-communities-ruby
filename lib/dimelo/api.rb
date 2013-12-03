@@ -49,6 +49,7 @@ module Dimelo
 
       autoload :Openable, 'dimelo/api/common/openable'
       autoload :Publishable, 'dimelo/api/common/publishable'
+      autoload :Starrable, 'dimelo/api/common/starrable'
 
     end
 
