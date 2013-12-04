@@ -2,6 +2,7 @@ module Dimelo
   class Feedback < Dimelo::API::Model
     include ::Dimelo::API::Common::Openable
     include ::Dimelo::API::Common::Publishable
+    include ::Dimelo::API::Common::Starrable
 
     attributes :id, :title, :body, :body_format, :flow_state, :score, :user_id,
                :category_id, :category_ids, :category_names, :status_id, :star,
