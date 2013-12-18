@@ -30,7 +30,9 @@ module Dimelo
       end
 
       def perform(method, uri, payload={})
-        @client.send(method, uri, payload)
+        @client.send(method, uri, payload) do |req|
+          req.headers['Accept'] = 'application/json'
+        end
       end
 
       private

@@ -87,6 +87,12 @@ describe Dimelo::API::Connection do
       response.env[:request_headers]["Content-Type"].should == 'application/x-www-form-urlencoded'
     end
 
+    it 'sends accept json request' do
+      response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
+      response.env[:request_headers]["Accept"].should == 'application/json'
+      response.should be_success
+    end
+
   end
 
 end
