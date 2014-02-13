@@ -31,7 +31,8 @@ module Dimelo
 
       def perform(method, uri, payload={})
         @client.send(method, uri, payload) do |req|
-          req.headers['Accept'] = 'application/json'
+          req.headers[:accept] = 'application/json'
+          req.headers[:user_agent] = user_agent
         end
       end
 
@@ -39,6 +40,17 @@ module Dimelo
 
       def timeout
         @http_options[:timeout] || 10
+      end
+
+      def user_agent_details
+        @http_options[:user_agent] || ''
+      end
+
+      def user_agent
+        "DimeloAPI/#{Dimelo::API::VERSION} " \
+          << (user_agent_details.present? ? "(#{user_agent_details}) " : '') \
+          << "Faraday/#{Faraday::VERSION} " \
+          << "Ruby/#{RUBY_VERSION}"
       end
 
       def client_options

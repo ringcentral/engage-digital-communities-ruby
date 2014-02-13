@@ -5,7 +5,7 @@ module Dimelo
     include ::Dimelo::API::Common::Starrable
 
     attributes :id, :title, :body, :body_format, :flow_state, :score, :user_id,
-               :category_id, :category_ids, :category_names, :status_id, :star,
+               :category_id, :category_ids, :category_names, :status_id, :star, :starred_at,
                :closed, :attachments_count, :comments_count, :positive_votes_count, :negative_votes_count,
                :permalink, :ipaddr, :created_at, :updated_at
 

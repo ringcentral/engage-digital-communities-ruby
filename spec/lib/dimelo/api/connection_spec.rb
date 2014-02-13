@@ -89,10 +89,15 @@ describe Dimelo::API::Connection do
 
     it 'sends accept json request' do
       response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
-      response.env[:request_headers]["Accept"].should == 'application/json'
+      response.env[:request_headers][:accept].should == 'application/json'
       response.should be_success
     end
 
+    it 'sends user_agent request' do
+      response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
+      response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
+      response.should be_success
+    end
   end
 
 end
