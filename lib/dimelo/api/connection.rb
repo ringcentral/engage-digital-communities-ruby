@@ -43,7 +43,11 @@ module Dimelo
       end
 
       def user_agent_details
-        @http_options[:user_agent] || ''
+        strip_non_ascii(@http_options[:user_agent] || '')
+      end
+
+      def strip_non_ascii(setting, replacement = '')
+        setting.gsub(/\P{ASCII}/, replacement)
       end
 
       def user_agent

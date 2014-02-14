@@ -98,6 +98,34 @@ describe Dimelo::API::Connection do
       response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
       response.should be_success
     end
+
+    context 'Custom user_agent with valid ASCII characters' do
+      let!(:custom_user_agent) { "SMCC; I asked and failed" }
+
+      subject do
+        Dimelo::API::Connection.new('github.com:443', :user_agent => custom_user_agent)
+      end
+
+      it 'sends custom user_agent request' do
+        response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
+        response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} (#{custom_user_agent}) Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
+        response.should be_success
+      end
+    end
+
+    context 'Custom user_agent with invalid UTF-8 characters' do
+      let!(:custom_user_agent) { "SMCC; J'ai demandé & j'ai échoué" }
+
+      subject do
+        Dimelo::API::Connection.new('github.com:443', :user_agent => custom_user_agent)
+      end
+
+      it 'sends custom user_agent request' do
+        response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
+        response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} (SMCC; J'ai demand & j'ai chou) Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
+        response.should be_success
+      end
+    end
   end
 
 end
