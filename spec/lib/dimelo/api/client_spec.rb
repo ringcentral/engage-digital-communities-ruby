@@ -12,7 +12,8 @@ describe Dimelo::API::Client do
                     "error": "#{error}",
                     "message": "#{message}",
                     "status": #{status}
-                  }}
+                  }},
+            status: status
   end
   describe '#transport' do
 
@@ -63,10 +64,10 @@ describe Dimelo::API::Client do
     end
 
     it 'raise an API::Error if body is not json' do
-      subject.stub_chain(:connection, :perform) { double success?: false, body: 'MemCache Error' }
+      subject.stub_chain(:connection, :perform) { double success?: false, body: 'MemCache Error', status: 500 }
       expect{
         subject.transport(:post, '/users', {'access_token' => 'my-token'})
-      }.to raise_error(Dimelo::API::Error, 'MemCache Error')
+      }.to raise_error(Dimelo::API::Error, 'POST /users - 500 MemCache Error')
     end
 
     it 'raise an API::BaseError if error does not match defined errors' do

@@ -9,7 +9,7 @@ module Dimelo
       # - DefinedError descendant exception (DomainNotFoundError,...) if status & name matches declared DefinedError child
       # - BaseError if status and name does not match any declared Error
       # - Error if body cannot be json parsed
-      def self.from(body)
+      def self.from(method, path, http_status, body)
         json = Dimelo::API.decode_json(body).symbolize_keys!
         name = json.delete(:error)
         status = json.delete(:status)
@@ -21,7 +21,7 @@ module Dimelo
           BaseError.new(name, status, message)
         end
       rescue ::MultiJson::LoadError
-        new(body)
+        new("#{method.to_s.upcase} #{path} - #{http_status} #{body}")
       end
     end
 

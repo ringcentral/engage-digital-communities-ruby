@@ -25,7 +25,7 @@ module Dimelo
         if response.success?
           response.body
         else
-          raise Error.from(response.body)
+          raise Error.from(method, path, response.status, response.body)
         end
       end
 
