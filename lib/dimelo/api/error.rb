@@ -20,7 +20,7 @@ module Dimelo
         else
           BaseError.new(name, status, message)
         end
-      rescue MultiJson::LoadError
+      rescue ::MultiJson::LoadError
         new(body)
       end
     end
