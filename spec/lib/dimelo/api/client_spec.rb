@@ -62,6 +62,12 @@ describe Dimelo::API::Client do
       }.to raise_error(Dimelo::API::DomainNotFoundError)
     end
 
+    it 'raise an API::Error if body is not json' do
+      subject.stub_chain(:connection, :perform) { double success?: false, body: 'MemCache Error' }
+      expect{
+        subject.transport(:post, '/users', {'access_token' => 'my-token'})
+      }.to raise_error(Dimelo::API::Error, 'MemCache Error')
+    end
   end
 
   describe '#default_parameters' do

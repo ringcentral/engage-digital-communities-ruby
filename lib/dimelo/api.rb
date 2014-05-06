@@ -28,10 +28,11 @@ module Dimelo
     autoload :VERSION,          'dimelo/api/version'
     autoload :Client,           'dimelo/api/client'
     autoload :Connection,       'dimelo/api/connection'
-    autoload :Error,            'dimelo/api/client'
     autoload :Model,            'dimelo/api/model'
     autoload :BasicObject,      'dimelo/api/basic_object'
     autoload :LazzyCollection,  'dimelo/api/lazzy_collection'
+
+    require 'dimelo/api/error'
 
     class << self
 
