@@ -20,7 +20,7 @@ module Dimelo
         else
           BaseError.new(name, status, message)
         end
-      rescue ::MultiJson::LoadError
+      rescue ActiveSupport::JSON.parse_error
         new("#{method.to_s.upcase} #{path} - #{http_status} #{body}")
       end
     end
