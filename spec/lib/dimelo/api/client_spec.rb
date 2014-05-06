@@ -68,6 +68,14 @@ describe Dimelo::API::Client do
         subject.transport(:post, '/users', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::Error, 'MemCache Error')
     end
+
+    it 'raise an API::BaseError if error does not match defined errors' do
+      subject.stub_chain(:connection, :perform) { response_error 123, 'unable_action', 'cannot perform action' }
+      expect{
+        subject.transport(:post, '/users', {'access_token' => 'my-token'})
+      }.to raise_error(Dimelo::API::BaseError, 'cannot perform action')
+    end
+
   end
 
   describe '#default_parameters' do
