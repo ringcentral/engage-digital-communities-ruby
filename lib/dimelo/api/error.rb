@@ -30,7 +30,7 @@ module Dimelo
         @name = name
         @status = status
         @message = message
-        super(message)
+        super("error_type:#{name} - status:#{status} - body:#{message}")
       end
     end
 

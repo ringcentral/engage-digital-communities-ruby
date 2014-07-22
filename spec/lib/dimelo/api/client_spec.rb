@@ -74,7 +74,7 @@ describe Dimelo::API::Client do
       subject.stub_chain(:connection, :perform) { response_error 123, 'unable_action', 'cannot perform action' }
       expect{
         subject.transport(:post, '/users', {'access_token' => 'my-token'})
-      }.to raise_error(Dimelo::API::BaseError, 'cannot perform action')
+      }.to raise_error(Dimelo::API::BaseError, 'error_type:unable_action - status:123 - body:cannot perform action')
     end
 
   end
