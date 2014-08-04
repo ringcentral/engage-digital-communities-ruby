@@ -14,6 +14,7 @@ module Dimelo
   autoload :Membership,     'dimelo/api/model/membership'
   autoload :PrivateMessage, 'dimelo/api/model/private_message'
   autoload :Question,       'dimelo/api/model/question'
+  autoload :Role,           'dimelo/api/model/role'
   autoload :User,           'dimelo/api/model/user'
 
   # Attachments
