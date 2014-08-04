@@ -8,7 +8,7 @@ describe Dimelo::Attachment do
   describe Dimelo::QuestionAttachment do
 
     it 'use question path' do
-      client.should_receive(:transport).with(:get, 'questions/1/attachments', {:offset=>0, :limit=>30}).and_return('[]')
+      expect(client).to receive(:transport).with(:get, 'questions/1/attachments', {:offset=>0, :limit=>30}).and_return('[]')
       Dimelo::QuestionAttachment.find({:question_id => 1}, client)
     end
 
@@ -17,7 +17,7 @@ describe Dimelo::Attachment do
   describe Dimelo::AnswerAttachment do
 
     it 'use answer path' do
-      client.should_receive(:transport).with(:get, 'questions/2/answers/1/attachments', {:offset=>0, :limit=>30}).and_return('[]')
+      expect(client).to receive(:transport).with(:get, 'questions/2/answers/1/attachments', {:offset=>0, :limit=>30}).and_return('[]')
       Dimelo::AnswerAttachment.find({question_id: 2, answer_id: 1}, client)
     end
 

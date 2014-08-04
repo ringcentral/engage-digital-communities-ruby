@@ -8,24 +8,24 @@ describe Dimelo::API::Connection do
     let(:https_uri) { URI.parse('https://example.com:8080/foo/bar?egg=spam')}
 
     it 'should infer :use_ssl => true from the scheme' do
-      Dimelo::API::Connection.should_receive(:new).with('https://example.com:8080/foo/bar?egg=spam', :use_ssl => true)
+      expect(Dimelo::API::Connection).to receive(:new).with('https://example.com:8080/foo/bar?egg=spam', :use_ssl => true)
       Dimelo::API::Connection.from_uri(https_uri)
     end
 
     it 'should infer :use_ssl => false from the scheme' do
-      Dimelo::API::Connection.should_receive(:new).with('http://example.com:8080/foo/bar?egg=spam', :use_ssl => false)
+      expect(Dimelo::API::Connection).to receive(:new).with('http://example.com:8080/foo/bar?egg=spam', :use_ssl => false)
       Dimelo::API::Connection.from_uri(http_uri)
     end
 
     it 'should support http options' do
-      Dimelo::API::Connection.should_receive(:new).with('http://example.com:8080/foo/bar?egg=spam', :use_ssl => false, :timeout => 80)
+      expect(Dimelo::API::Connection).to receive(:new).with('http://example.com:8080/foo/bar?egg=spam', :use_ssl => false, :timeout => 80)
       Dimelo::API::Connection.from_uri(http_uri, :timeout => 80)
     end
 
     it 'should reuse connections for same scheme/hosts/port' do
       first = Dimelo::API::Connection.from_uri(http_uri)
       second = Dimelo::API::Connection.from_uri(http_uri)
-      first.object_id.should == second.object_id
+      expect(first.object_id).to eq(second.object_id)
     end
 
   end
@@ -42,9 +42,9 @@ describe Dimelo::API::Connection do
 
       it 'works' do
         response = subject.perform(*request)
-        response.body.should_not be_nil
-        response.body.should_not be_empty
-        response.should be_success
+        expect(response.body).to_not be_nil
+        expect(response.body).to_not be_empty
+        expect(response).to be_success
       end
 
     end
@@ -59,9 +59,9 @@ describe Dimelo::API::Connection do
 
       it 'works' do
         response = subject.perform(*request)
-        response.body.should_not be_nil
-        response.body.should_not be_empty
-        response.should be_success
+        expect(response.body).to_not be_nil
+        expect(response.body).to_not be_empty
+        expect(response).to be_success
       end
 
     end
@@ -74,29 +74,29 @@ describe Dimelo::API::Connection do
 
     it 'sends multipart request with attachment' do
       response = subject.perform(:put, 'http://www.google.com', {:file => file})
-      response.env[:request_headers]["Content-Type"].should include 'multipart/form-data'
+      expect(response.env[:request_headers]["Content-Type"]).to include('multipart/form-data')
     end
 
     it 'sends multipart when containing attachment param' do
       response = subject.perform(:put, 'http://www.google.com', {:file => file, :q => 'hello'})
-      response.env[:request_headers]["Content-Type"].should include 'multipart/form-data'
+      expect(response.env[:request_headers]["Content-Type"]).to include('multipart/form-data')
     end
 
     it 'should sends form urlencoded without attachment' do
       response = subject.perform(:put, 'http://www.google.com', {:q => 'hello'})
-      response.env[:request_headers]["Content-Type"].should == 'application/x-www-form-urlencoded'
+      expect(response.env[:request_headers]["Content-Type"]).to eq('application/x-www-form-urlencoded')
     end
 
     it 'sends accept json request' do
       response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
-      response.env[:request_headers][:accept].should == 'application/json'
-      response.should be_success
+      expect(response.env[:request_headers][:accept]).to eq('application/json')
+      expect(response).to be_success
     end
 
     it 'sends user_agent request' do
       response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
-      response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
-      response.should be_success
+      expect(response.env[:request_headers][:user_agent]).to eq("DimeloAPI/#{Dimelo::API::VERSION} Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}")
+      expect(response).to be_success
     end
 
     context 'Custom user_agent with valid ASCII characters' do
@@ -108,8 +108,8 @@ describe Dimelo::API::Connection do
 
       it 'sends custom user_agent request' do
         response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
-        response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} (#{custom_user_agent}) Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
-        response.should be_success
+        expect(response.env[:request_headers][:user_agent]).to eq("DimeloAPI/#{Dimelo::API::VERSION} (#{custom_user_agent}) Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}")
+        expect(response).to be_success
       end
     end
 
@@ -122,8 +122,8 @@ describe Dimelo::API::Connection do
 
       it 'sends custom user_agent request' do
         response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
-        response.env[:request_headers][:user_agent].should == "DimeloAPI/#{Dimelo::API::VERSION} (SMCC; J'ai demand & j'ai chou) Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}"
-        response.should be_success
+        expect(response.env[:request_headers][:user_agent]).to eq("DimeloAPI/#{Dimelo::API::VERSION} (SMCC; J'ai demand & j'ai chou) Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}")
+        expect(response).to be_success
       end
     end
   end

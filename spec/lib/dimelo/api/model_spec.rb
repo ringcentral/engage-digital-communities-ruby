@@ -13,60 +13,51 @@ describe Dimelo::API::Model do
 
   describe '.new' do
 
-    subject{ User.new(:id => 1, :firstname => 'Homer Jay', :lastname => 'Simpson') }
-
-    its(:id) { should be 1 }
-    its(:firstname) { should be_eql 'Homer Jay' }
-    its(:lastname) { should be_eql 'Simpson' }
+    it "creates user with given attributes" do
+      user = User.new(:id => 1, :firstname => 'Homer Jay', :lastname => 'Simpson')
+      expect(user.id).to eq(1)
+      expect(user.firstname).to eq('Homer Jay')
+      expect(user.lastname).to eq('Simpson')
+    end
 
   end
 
   describe '.parse' do
 
-    describe 'one' do
-
-      subject do
-        User.parse(%[
+    it 'parses one json record' do
+      user = User.parse(%[
           {
             "id": 1,
             "firstname": "Homer Jay",
             "lastname": "Simpson"
           }
         ])
-      end
 
-      it { should be_an(User) }
-      its(:id) { should be 1 }
-      its(:firstname) { should be_eql 'Homer Jay' }
-      its(:lastname) { should be_eql 'Simpson' }
-
+      expect(user).to be_a(User)
+      expect(user.id).to eq(1)
+      expect(user.firstname).to eq('Homer Jay')
+      expect(user.lastname).to eq('Simpson')
     end
 
-    describe 'many' do
+    it 'parses many json records' do
+      user = User.parse(%[
+        [
+          {
+            "id": 1,
+            "firstname": "Homer Jay",
+            "lastname": "Simpson"
+          },
+          {
+            "id": 2,
+            "firstname": "Marjorie 'Marge'",
+            "lastname": "Simpson"
+          }
+        ]
+      ])
 
-      subject do
-        User.parse(%[
-          [
-            {
-              "id": 1,
-              "firstname": "Homer Jay",
-              "lastname": "Simpson"
-            },
-            {
-              "id": 2,
-              "firstname": "Marjorie 'Marge'",
-              "lastname": "Simpson"
-            }
-          ]
-        ])
-      end
-
-      its(:size) { should be 2 }
-
-      it 'return a user collection' do
-        subject.each do |u|
-          u.should be_an(User)
-        end
+      expect(user.size).to eq(2)
+      user.each do |u|
+        expect(u).to be_a(User)
       end
 
     end
@@ -77,11 +68,11 @@ describe Dimelo::API::Model do
     let(:user) { BaseUser.new }
 
     it 'should not have leading and trailling "/" to not override path_prefix' do
-      user.compute_path.should == 'base_users'
+      expect(user.compute_path).to eq('base_users')
     end
 
     it 'should work when computed with criteria' do
-      user.compute_path(:id => 1).should == 'base_users/1'
+      expect(user.compute_path(:id => 1)).to eq('base_users/1')
     end
 
   end
@@ -91,23 +82,23 @@ describe Dimelo::API::Model do
     let(:client) { Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => 'foo') }
 
     it 'compute index path' do
-      client.should_receive(:transport).with(:get, 'groups/42/users', {:offset=>0, :limit=>30}).and_return('[]')
+      expect(client).to receive(:transport).with(:get, 'groups/42/users', {:offset=>0, :limit=>30}).and_return('[]')
       User.find({:group_id => 42}, client)
     end
 
     it 'compute show path' do
-      client.should_receive(:transport).with(:get, 'groups/42/users/1', {:offset=>0, :limit=>30}).and_return('{}')
+      expect(client).to receive(:transport).with(:get, 'groups/42/users/1', {:offset=>0, :limit=>30}).and_return('{}')
       User.find({:group_id => 42, :id => 1}, client)
     end
 
     it 'send extra criterias as payload' do
-      client.should_receive(:transport).with(:get, 'groups/42/users', {:order => 'foo', :egg => 'spam', :offset=>0, :limit=>30}).and_return('[]')
+      expect(client).to receive(:transport).with(:get, 'groups/42/users', {:order => 'foo', :egg => 'spam', :offset=>0, :limit=>30}).and_return('[]')
       User.find({:group_id => 42, :order => 'foo', :egg => 'spam'}, client)
     end
 
     it 'send the result to .parse' do
-      client.should_receive(:transport).at_least(1).times.and_return('JSON')
-      User.should_receive(:parse).at_least(1).times.with('JSON', client)
+      expect(client).to receive(:transport).at_least(1).times.and_return('JSON')
+      expect(User).to receive(:parse).at_least(1).times.with('JSON', client)
       User.find({:group_id => 42}, client)
     end
 
@@ -126,17 +117,17 @@ describe Dimelo::API::Model do
     end
 
     it 'should returns only mass-assigned attributes' do
-      Article.new(:category_ids => nil).tracked_attributes.should == [:category_ids]
+      expect(Article.new(:category_ids => nil).tracked_attributes).to eq([:category_ids])
     end
 
     it 'should works on single assigning' do
       article = Article.new
       article.category_ids = nil
-      article.tracked_attributes.should == [:category_ids]
+      expect(article.tracked_attributes).to eq([:category_ids])
     end
 
     it 'should returns nothing if not set' do
-      Article.new.tracked_attributes.should == []
+      expect(Article.new.tracked_attributes).to eq([])
     end
 
   end
@@ -155,15 +146,15 @@ describe Dimelo::API::Model do
     end
 
     it 'does not send param when not sent' do
-      Article.new.submit_attributes.should == {}
+      expect(Article.new.submit_attributes).to eq({})
     end
 
     it 'sends only param specified' do
-      Article.new(:id => 1).submit_attributes.should == {:id => 1}
+      expect(Article.new(:id => 1).submit_attributes).to eq({:id => 1})
     end
 
     it 'sends empty string is precised' do
-      Article.new(:id => 1, :category_ids => nil).submit_attributes.should == {:id => 1, :category_ids => nil}
+      expect(Article.new(:id => 1, :category_ids => nil).submit_attributes).to eq({:id => 1, :category_ids => nil})
     end
 
   end

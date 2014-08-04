@@ -19,7 +19,7 @@ describe Dimelo::API::Client do
 
     it 'return an the response body' do
       json = JSON.parse(subject.transport(:get, 'check'))
-      json.should == {"success" => true}
+      expect(json).to eq({"success" => true})
     end
 
     it 'raise InvalidAccessTokenError if token is invalid' do
@@ -35,28 +35,27 @@ describe Dimelo::API::Client do
     end
 
     it 'raise NotEnabledError if api is not enabled' do
-      subject.stub_chain(:connection, :perform) { response_error 403, 'api_not_enabled' }
+      allow(subject).to receive_message_chain('connection.perform') { response_error 403, 'api_not_enabled' }
       expect{
         subject.transport(:get, 'check', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::NotEnabledError)
     end
 
     it 'raise SSLError if request should be https' do
-      subject.stub_chain(:connection, :perform) { response_error 412, 'routing_error' }
+      allow(subject).to receive_message_chain('connection.perform') { response_error 412, 'routing_error' }
       expect{
         subject.transport(:get, 'check', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::SslError)
     end
 
     it 'raise InvalidUserTypeError if create user is invalid' do
-      subject.stub_chain(:connection, :perform) { response_error 400, 'invalid_user_type' }
+      allow(subject).to receive_message_chain('connection.perform') { response_error 400, 'invalid_user_type' }
       expect{
         subject.transport(:post, '/users', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::InvalidUserTypeError)
     end
 
     it 'raise DomainNotFoundError if request on invalid domain' do
-      pending 'wait for ccp to handle domain not found as 404'
       client = Dimelo::API::Client.new('https://no-domain.api.users.dimelo.info:4433/1.0', 'access_token' => ::ACCESS_TOKEN, :http_options => {:timeout => 80})
       expect{
         client.transport(:get, '/check', {'access_token' => 'my-token'})
@@ -64,14 +63,14 @@ describe Dimelo::API::Client do
     end
 
     it 'raise an API::Error if body is not json' do
-      subject.stub_chain(:connection, :perform) { double success?: false, body: 'MemCache Error', status: 500 }
+      allow(subject).to receive_message_chain('connection.perform') { double success?: false, body: 'MemCache Error', status: 500 }
       expect{
         subject.transport(:post, '/users', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::Error, 'POST /users - 500 MemCache Error')
     end
 
     it 'raise an API::BaseError if error does not match defined errors' do
-      subject.stub_chain(:connection, :perform) { response_error 123, 'unable_action', 'cannot perform action' }
+      allow(subject).to receive_message_chain('connection.perform') { response_error 123, 'unable_action', 'cannot perform action' }
       expect{
         subject.transport(:post, '/users', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::BaseError, 'error_type:unable_action - status:123 - body:cannot perform action')
@@ -81,19 +80,19 @@ describe Dimelo::API::Client do
 
   describe '#default_parameters' do
     it 'is not polluted by http_options' do
-      subject.default_parameters.should_not include('http_options')
-      subject.default_parameters.should_not include(:http_options)
+      expect(subject.default_parameters).not_to include('http_options')
+      expect(subject.default_parameters).not_to include(:http_options)
     end
   end
 
   describe '#connection' do
 
     it 'returns a Connection' do
-      subject.send(:connection).should be_kind_of(Dimelo::API::Connection)
+      expect(subject.send(:connection)).to be_kind_of(Dimelo::API::Connection)
     end
 
     it 'supports http_options' do
-      Dimelo::API::Connection.should_receive(:from_uri).with(anything,hash_including(:timeout => 80))
+      expect(Dimelo::API::Connection).to receive(:from_uri).with(anything,hash_including(:timeout => 80))
       subject.send(:connection)
     end
   end
