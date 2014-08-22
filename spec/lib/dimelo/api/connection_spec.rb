@@ -42,7 +42,6 @@ describe Dimelo::API::Connection do
 
       it 'works' do
         response = subject.perform(*request)
-        expect(response.body).to_not be_nil
         expect(response.body).to_not be_empty
         expect(response).to be_success
       end
@@ -52,14 +51,13 @@ describe Dimelo::API::Connection do
     context 'HTTPS' do
 
       subject do
-        Dimelo::API::Connection.new('github.com:443', :use_ssl => true)
+        Dimelo::API::Connection.new('www.google.fr:443', :use_ssl => true)
       end
 
-      let(:request) { [:get, 'https://github.com/'] }
+      let(:request) { [:get, 'https://www.google.fr/'] }
 
       it 'works' do
         response = subject.perform(*request)
-        expect(response.body).to_not be_nil
         expect(response.body).to_not be_empty
         expect(response).to be_success
       end

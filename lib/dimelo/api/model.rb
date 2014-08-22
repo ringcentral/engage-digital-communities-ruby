@@ -113,7 +113,7 @@ module Dimelo
           if self.respond_to?("#{k}=")
             self.send("#{k}=", v)
           else
-            warn("Unknown field #{k} for object #{self.inspect}")
+            warn("Unknown field #{k} for #{self.class}")
           end
         end
       end

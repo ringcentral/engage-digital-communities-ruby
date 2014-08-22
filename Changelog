@@ -1,3 +1,8 @@
+# 0.2.1
+
+Attempt to fix segfault in model.rb:116 (#inspect)
+Fix HTTPS spec with github
+
 # 0.2.0
 
 Added support for Role + upgrade to Rspec 3
