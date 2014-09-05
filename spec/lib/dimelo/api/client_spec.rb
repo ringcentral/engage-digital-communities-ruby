@@ -51,29 +51,37 @@ describe Dimelo::API::Client do
     it 'raise InvalidUserTypeError if create user is invalid' do
       allow(subject).to receive_message_chain('connection.perform') { response_error 400, 'invalid_user_type' }
       expect{
-        subject.transport(:post, '/users', {'access_token' => 'my-token'})
+        subject.transport(:post, 'users', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::InvalidUserTypeError)
     end
 
     it 'raise DomainNotFoundError if request on invalid domain' do
       client = Dimelo::API::Client.new('https://no-domain.api.users.dimelo.info:4433/1.0', 'access_token' => ::ACCESS_TOKEN, :http_options => {:timeout => 80})
       expect{
-        client.transport(:get, '/check', {'access_token' => 'my-token'})
+        client.transport(:get, 'check', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::DomainNotFoundError)
     end
 
     it 'raise an API::Error if body is not json' do
       allow(subject).to receive_message_chain('connection.perform') { double success?: false, body: 'MemCache Error', status: 500 }
       expect{
-        subject.transport(:post, '/users', {'access_token' => 'my-token'})
-      }.to raise_error(Dimelo::API::Error, 'POST /users - 500 MemCache Error')
+        subject.transport(:post, 'users', {'access_token' => 'my-token'})
+      }.to raise_error(Dimelo::API::Error, 'POST users - 500 MemCache Error')
     end
 
     it 'raise an API::BaseError if error does not match defined errors' do
       allow(subject).to receive_message_chain('connection.perform') { response_error 123, 'unable_action', 'cannot perform action' }
       expect{
-        subject.transport(:post, '/users', {'access_token' => 'my-token'})
+        subject.transport(:post, 'users', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::API::BaseError, 'error_type:unable_action - status:123 - body:cannot perform action')
+    end
+
+    it 'return an the response body in case of validation error' do
+      json = JSON.parse(subject.transport(:post, 'roles', {}))
+      expect(json).to include "error" => 'validation_error'
+      expect(json).to include "errors" => [{"attribute"=>"label", "type"=>"invalid", "message"=>"Label is invalid"}]
+      expect(json).to include "message" => "Role can't be saved"
+      expect(json).to include "status" => 422
     end
 
   end

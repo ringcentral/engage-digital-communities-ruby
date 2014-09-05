@@ -1,3 +1,8 @@
+# 0.2.2
+
+Fix handling of validation errors, they now return status 422 and were incorrectely raise.
+This fix restores the previous behaviour: returning a Dimelo record with AR errors.
+
 # 0.2.1
 
 Attempt to fix segfault in model.rb:116 (#inspect)

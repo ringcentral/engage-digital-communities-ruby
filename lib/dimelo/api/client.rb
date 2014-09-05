@@ -22,7 +22,7 @@ module Dimelo
       def transport(method, path, payload={})
         response = connection.perform(method, path, default_parameters.merge(payload))
 
-        if response.success?
+        if response.success? or response.status == 422
           response.body
         else
           raise Error.from(method, path, response.status, response.body)
