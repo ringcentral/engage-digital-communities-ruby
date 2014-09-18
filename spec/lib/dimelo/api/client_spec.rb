@@ -15,6 +15,7 @@ describe Dimelo::API::Client do
                   }},
             status: status
   end
+
   describe '#transport' do
 
     it 'return an the response body' do
@@ -104,4 +105,80 @@ describe Dimelo::API::Client do
       subject.send(:connection)
     end
   end
+
+  describe '#webhook_api_setup!' do
+
+    context 'webhook is not defined' do
+
+      before do
+        allow(subject).to receive(:webhooks) { [] }
+      end
+
+      it 'creates webhook configuration' do
+        token = SecureRandom.hex
+        expect(subject).not_to receive(:transport).with(array_including(:delete))
+        expect(subject).to receive(:transport).with(:post, 'webhooks', {
+          'endpoint_enabled' => true,
+          'endpoint_url' => 'http://sample-endpoint-url/endpoint',
+          'preprod_settings' => true,
+          'verify_token' => token
+        })
+        subject.webhook_api_setup!('http://sample-endpoint-url/endpoint', true, token)
+      end
+
+      it 'creates webhook configuration with submitted events' do
+        token = SecureRandom.hex
+        expect(subject).not_to receive(:transport).with(array_including(:delete))
+        expect(subject).to receive(:transport).with(:post, 'webhooks', hash_including(
+          'event.fired_1' => true,
+          'event.fired_2' => true,
+          'event.fired_5' => true
+        ))
+        subject.webhook_api_setup!('http://sample-endpoint-url/endpoint', true, token, ['event.fired_1', 'event.fired_2', 'event.fired_5'])
+      end
+
+    end
+
+    context 'webhook already defined' do
+
+      before do
+        allow(subject).to receive(:webhooks) { [{
+          'id' => '1',
+          'endpoint_enabled' => true,
+          'endpoint_url' => 'http://sample-endpoint-url/endpoint',
+          'preprod_settings' => true,
+          'verify_token' => SecureRandom.hex,
+          'event.fired_1' => true,
+          'event.fired_2' => true,
+          'event.fired_3' => false,
+          'event.fired_4' => false,
+          'event.fired_5' => false
+        }] }
+      end
+
+      it 'deletes and re-creates webhook configuration when submitted events are not enabled' do
+        token = SecureRandom.hex
+        expect(subject).to receive(:transport).with(:delete, anything)
+        expect(subject).to receive(:transport).with(:post, 'webhooks', {
+          'endpoint_enabled' => true,
+          'endpoint_url' => 'http://sample-endpoint-url/endpoint',
+          'preprod_settings' => true,
+          'verify_token' => token,
+          'event.fired_1' => true,
+          'event.fired_2' => true,
+          'event.fired_3' => true
+        })
+        subject.webhook_api_setup!('http://sample-endpoint-url/endpoint', true, token, ['event.fired_1', 'event.fired_2', 'event.fired_3'])
+      end
+
+      it 'does nothing when webhook configuration is present and submitted events are enabled' do
+        expect(subject).not_to receive(:transport).with(:delete, anything)
+        expect(subject).not_to receive(:transport).with(:post, 'webhooks', anything)
+        subject.webhook_api_setup!('http://sample-endpoint-url/endpoint', true, SecureRandom.hex, ['event.fired_1', 'event.fired_2'])
+      end
+
+    end
+
+  end
+
 end
