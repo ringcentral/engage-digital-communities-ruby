@@ -17,6 +17,7 @@ module Dimelo
   autoload :Question,       'dimelo/api/model/question'
   autoload :Role,           'dimelo/api/model/role'
   autoload :User,           'dimelo/api/model/user'
+  autoload :Webhook,           'dimelo/api/model/webhook'
 
   # Attachments
   autoload :AnswerAttachment,           'dimelo/api/model/attachment'

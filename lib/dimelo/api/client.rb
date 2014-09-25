@@ -19,24 +19,6 @@ module Dimelo
         Dimelo::API.decode_json(transport(:get, 'config'))
       end
 
-      def webhooks
-        Dimelo::API.decode_json(transport(:get, 'webhooks'))
-      end
-
-      def webhook_api_setup!(url, preprod = true, verify_token = nil, events_name = [])
-        return unless url && verify_token
-        webhook = webhooks.find { |webhook| webhook['endpoint_url'] == url }
-        return if webhook && events_name.all? { |e| webhook[e] == true }
-
-        transport(:delete, "webhooks/#{webhook['id']}") if webhook && webhook.has_key?('id')
-        transport(:post, 'webhooks', {
-          'endpoint_enabled' => true,
-          'endpoint_url' => url,
-          'preprod_settings' => preprod,
-          'verify_token' => verify_token
-        }.merge(Hash[events_name.map { |e| [e, true] }]))
-      end
-
       def transport(method, path, payload={})
         response = connection.perform(method, path, default_parameters.merge(payload))
 
