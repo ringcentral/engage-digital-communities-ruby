@@ -110,11 +110,7 @@ module Dimelo
         @tracked_attributes = []
         self.client = client
         hash.each do |k,v|
-          if self.respond_to?("#{k}=")
-            self.send("#{k}=", v)
-          else
-            warn("Unknown field #{k} for #{self.class}")
-          end
+          self.send("#{k}=", v) if self.respond_to?("#{k}=")
         end
       end
 
