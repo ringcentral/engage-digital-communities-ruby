@@ -1,3 +1,11 @@
+# 0.3.3
+
+Remove warning when attribute is present in api but not defined in model
+
+# 0.3.2
+
+Implement webhook as a standard resource instead of crappy built-in stuff
+
 # 0.3.1
 
 Add a feature to push a webhook API configuration through API
