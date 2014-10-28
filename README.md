@@ -2,6 +2,12 @@
 
 Ruby client for the Dimelo Customer Community Platform
 
+This client support most of Dimelo CCP resources, can read and write them, and support proper validation and error format.
+
+This is heavily used at Dimelo.
+
+# Compatibility
+
 Compatible and tested with:
 
 - Ruby 2.0+
