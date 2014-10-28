@@ -1,0 +1,1 @@
+require 'dimelo/ccp/api'

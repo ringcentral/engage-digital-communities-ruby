@@ -2,7 +2,7 @@
 
 Ruby client for the Dimelo Customer Community Platform
 
-This client support most of Dimelo CCP resources, can read and write them, paginates with cursor like interface and supports proper validation and error format.
+This client support most of Dimelo CCP resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
 
 This is heavily used internaly at Dimelo.
 
@@ -28,11 +28,11 @@ gem 'dimelo_ccp_api'
 require 'dimelo_ccp_api'
 
 
-users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
-answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
-feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
+users_client = Dimelo::CCP::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
+answers_client = Dimelo::CCP::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
+feedbacks_client = Dimelo::CCP::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
 
-user = Dimelo::User.find(1, users_client)
+user = Dimelo::CCP::User.find(1, users_client)
 questions = user.questions(answers_client)
 puts "question count: #{questions.count}"
 
@@ -44,7 +44,7 @@ questions.each do |question, i|
   end
 end
 
-feedbacks = Dimelo::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
+feedbacks = Dimelo::CCP::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
 puts "feedbacks count: #{feedbacks.count}"
 puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
 
