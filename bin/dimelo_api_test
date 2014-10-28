@@ -6,9 +6,15 @@ $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/../lib"
 require 'dimelo_api'
 require 'pp'
 
-users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.info:4433/1.0', 'access_token' => '55d8ac94bfb93a71f1fb7ee730079e8a')
-answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.info:4431/1.0', 'access_token' => '8e82a073ff4687e21f5ef6eb11d654fe')
-feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.info:4432/1.0', 'access_token' => 'db169a2aed0947d7f6c60341e9d4ea2b')
+unless ENV['DIMELO_API_KEY'].present?
+  puts "Don't forget to set your api key"
+  exit 1
+end
+
+
+users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '55d8ac94bfb93a71f1fb7ee730079e8a')
+answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => '8e82a073ff4687e21f5ef6eb11d654fe')
+feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => 'db169a2aed0947d7f6c60341e9d4ea2b')
 #users_client = Dimelo::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => '55d8ac94bfb93a71f1fb7ee730079e8a')
 #answers_client = Dimelo::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => '8e82a073ff4687e21f5ef6eb11d654fe')
 #feedbacks_client = Dimelo::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => 'db169a2aed0947d7f6c60341e9d4ea2b')
