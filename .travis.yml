@@ -1,10 +1,10 @@
 language: ruby
 rvm:
+  - ruby-head
   - 2.2
   - 2.1
   - 2.0
-  - ruby-head
-  - jruby-head
+  - jruby-19mode
 gemfile:
   - gemfiles/Gemfile.activesupport-3.2.x
   - gemfiles/Gemfile.activesupport-4.0.x
@@ -13,3 +13,4 @@ gemfile:
 matrix:
   allow_failures:
     - gemfile: gemfiles/Gemfile.activesupport-edge
+    - rvm: ruby-head
