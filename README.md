@@ -28,9 +28,9 @@ gem 'dimelo_ccp_api'
 require 'dimelo_ccp_api'
 
 
-users_client = Dimelo::CCP::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
-answers_client = Dimelo::CCP::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
-feedbacks_client = Dimelo::CCP::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => ENV['DIMELO_CCP_TOKEN'])
+users_client = Dimelo::CCP::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => ENV['DIMELO_API_KEY'])
+answers_client = Dimelo::CCP::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => ENV['DIMELO_API_KEY'])
+feedbacks_client = Dimelo::CCP::API::Client.new('https://domain-test.api.ideas.dimelo.com/1.0', 'access_token' => ENV['DIMELO_API_KEY'])
 
 user = Dimelo::CCP::User.find(1, users_client)
 questions = user.questions(answers_client)
