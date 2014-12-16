@@ -1,5 +1,7 @@
 # Dimelo CCP API [![Build Status](https://travis-ci.org/dimelo/dimelo_ccp_api.svg?branch=master)](https://travis-ci.org/dimelo/dimelo_ccp_api) [![Code Climate](https://codeclimate.com/github/dimelo/dimelo_ccp_api.png)](https://codeclimate.com/github/dimelo/dimelo_ccp_api)
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dimelo/dimelo_ccp_api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Ruby client for the Dimelo Customer Community Platform
 
 This client support most of Dimelo CCP resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
