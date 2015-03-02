@@ -9,7 +9,7 @@ module Dimelo::CCP
                :answers_count, :attachments_count, :usefulnesses_yes_count, :usefulnesses_no_count,
                :star, :closed, :permalink, :created_at, :updated_at
 
-    submit_attributes :title, :body, :body_format, :category_ids, :user_id
+    submit_attributes :title, :body, :body_format, :category_ids, :user_id, :created_at
 
     belongs_to :user
     belongs_to :category
