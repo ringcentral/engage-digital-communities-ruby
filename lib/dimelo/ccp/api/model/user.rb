@@ -6,7 +6,7 @@ module Dimelo::CCP
     attributes :id, :firstname, :lastname, :signature, :email, :private_message, :type, :username, :flow_state, :about, :avatar, :created_at, :updated_at, :blocked, :team
     attributes *CUSTOM_FIELD_ATTRIBUTES
 
-    submit_attributes :type, :firstname, :lastname, :email, :username, :avatar_url, :about, :password, *CUSTOM_FIELD_ATTRIBUTES
+    submit_attributes :type, :firstname, :lastname, :email, :username, :avatar_url, :about, :password, :created_at, :confirmed_at, *CUSTOM_FIELD_ATTRIBUTES
 
     has_many :memberships
     has_many :questions
