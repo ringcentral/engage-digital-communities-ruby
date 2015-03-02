@@ -8,7 +8,7 @@ module Dimelo::CCP
                 :attachments_count, :comments_count,
                 :created_at, :updated_at, :question_id, :ipaddr, :question_flow_state
 
-    submit_attributes :body, :body_format, :user_id, :question_id
+    submit_attributes :body, :body_format, :user_id, :question_id, :created_at
 
     belongs_to :user
     belongs_to :question
