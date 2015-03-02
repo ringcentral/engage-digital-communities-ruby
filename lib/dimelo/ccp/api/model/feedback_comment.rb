@@ -8,7 +8,7 @@ module Dimelo::CCP
     path COMMENT_PATH
 
     attributes :id, :feedback_id, :body, :body_format, :flow_state, :user_id, :type, :status_id, :attachments_count, :created_at, :updated_at, :permalink, :ipaddr
-    submit_attributes :body, :body_format, :user_id, :feedback_id, :status_id
+    submit_attributes :body, :body_format, :user_id, :feedback_id, :status_id, :created_at
 
     belongs_to :user
     belongs_to :feedback
