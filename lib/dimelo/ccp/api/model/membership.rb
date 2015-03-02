@@ -3,7 +3,7 @@ module Dimelo::CCP
 
     path 'users/%{user_id}/memberships/%{id}'
 
-    attributes :id, :user_id, :role, :domain, :domain_application_id
+    attributes :id, :user_id, :role, :domain, :domain_application_id, :team
     submit_attributes :user_id, :role, :domain
 
     belongs_to :user
