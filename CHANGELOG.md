@@ -1,3 +1,9 @@
+# 0.4.2
+
+Fix created_at edition
+Fix user password/custom_field edition
+Fix avatar_url edition
+
 # 0.3.3
 
 Remove warning when attribute is present in api but not defined in model
