@@ -10,8 +10,8 @@ This is heavily used internaly at Dimelo.
 
 Compatible and tested with:
 
-- Ruby 2+ and Jruby-head
-- ActiveSupport 3.0+, 4.0.x and 4.1.x
+- Ruby MRI 2.4, 2.5, 2.6, Head and Jruby-head
+- ActiveSupport 3+, 4+, 5+, Head
 
 
 ## Installation
