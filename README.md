@@ -1,8 +1,8 @@
 # Dimelo CCP API [![Build Status](https://travis-ci.org/dimelo/dimelo_ccp_api.svg?branch=master)](https://travis-ci.org/dimelo/dimelo_ccp_api) [![Code Climate](https://codeclimate.com/github/dimelo/dimelo_ccp_api.png)](https://codeclimate.com/github/dimelo/dimelo_ccp_api)
 
-Ruby client for the Dimelo Customer Community Platform
+Ruby client for the Engage Communities
 
-This client support most of Dimelo CCP resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
+This client support most of Engage Communities resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
 
 This is heavily used internaly at Dimelo.
 
@@ -10,7 +10,7 @@ This is heavily used internaly at Dimelo.
 
 Compatible and tested with:
 
-- Ruby 2.0, 2.1, 2.2 and Jruby-head
+- Ruby 2+ and Jruby-head
 - ActiveSupport 3.0+, 4.0.x and 4.1.x
 
 
