@@ -1,4 +1,4 @@
-# Dimelo CCP API [![Build Status](https://travis-ci.org/dimelo/dimelo_ccp_api.svg?branch=master)](https://travis-ci.org/dimelo/dimelo_ccp_api) [![Code Climate](https://codeclimate.com/github/dimelo/dimelo_ccp_api.png)](https://codeclimate.com/github/dimelo/dimelo_ccp_api) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dimelo/dimelo_ccp_api)
+# Dimelo CCP API [![Build Status](https://travis-ci.org/dimelo/dimelo_ccp_api.svg?branch=master)](https://travis-ci.org/dimelo/dimelo_ccp_api) [![Code Climate](https://codeclimate.com/github/dimelo/dimelo_ccp_api.png)](https://codeclimate.com/github/dimelo/dimelo_ccp_api)
 
 Ruby client for the Dimelo Customer Community Platform
 
