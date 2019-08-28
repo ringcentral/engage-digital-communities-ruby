@@ -4,7 +4,7 @@ Ruby client for the Engage Communities
 
 This client support most of Engage Communities resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
 
-This is heavily used internaly at Dimelo.
+This is heavily used internaly at Engage Communities.
 
 # Compatibility
 
@@ -52,7 +52,7 @@ puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_i
 
 ## Contributing
 
-1. Fork it ( http://github.com/dimelo/dimelo_ccp_api/fork )
+1. Fork it ( http://github.com/ringcentral/engage-digital-communities-ruby/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
