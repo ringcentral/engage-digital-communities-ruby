@@ -1,4 +1,4 @@
-# Dimelo CCP API [![Build Status](https://travis-ci.org/dimelo/dimelo_ccp_api.svg?branch=master)](https://travis-ci.org/dimelo/dimelo_ccp_api) [![Code Climate](https://codeclimate.com/github/dimelo/dimelo_ccp_api.png)](https://codeclimate.com/github/dimelo/dimelo_ccp_api)
+# RingCentral Engage Communities ruby API Client
 
 Ruby client for the Engage Communities
 
