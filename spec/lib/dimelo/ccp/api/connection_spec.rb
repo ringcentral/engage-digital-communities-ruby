@@ -103,12 +103,6 @@ describe Dimelo::CCP::API::Connection do
       expect(response).to be_success
     end
 
-    it 'does not send access_token in payload' do
-      response = subject.perform(:get, 'http://www.google.com', { q: 'hello', access_token: 'token' })
-      expect_any_instance_of(Faraday::Connection).to receive(:get)#.with(:get, 'http://www.google.com', q: 'hello')
-      expect(response).to be_success
-    end
-
     context 'Custom user_agent with valid ASCII characters' do
       let!(:custom_user_agent) { "SMCC; I asked and failed" }
 
