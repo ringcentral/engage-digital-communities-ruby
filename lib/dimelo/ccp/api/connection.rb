@@ -29,9 +29,11 @@ module Dimelo::CCP
         initialize_client
       end
 
-      def perform(method, uri, payload={})
+      def perform(method, uri, payload = {})
+        access_token = payload.delete(:access_token)
         @client.send(method, uri, payload) do |req|
           req.headers[:accept] = 'application/json'
+          req.headers[:authorization] = "Bearer #{access_token}"
           req.headers[:user_agent] = user_agent
         end
       end
