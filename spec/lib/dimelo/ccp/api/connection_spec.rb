@@ -35,7 +35,7 @@ describe Dimelo::CCP::API::Connection do
     context 'HTTP' do
 
       subject do
-        Dimelo::CCP::API::Connection.new('www.google.fr')
+        Dimelo::CCP::API::Connection.new('http://www.google.fr')
       end
 
       let(:request) { [:get, 'http://www.google.fr/'] }
