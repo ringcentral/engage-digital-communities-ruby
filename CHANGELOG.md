@@ -1,3 +1,7 @@
+# 0.4.4
+
+Now uses HTTP Authorization Header instead of passing access_token via params.
+
 # 0.4.2
 
 Fix created_at edition

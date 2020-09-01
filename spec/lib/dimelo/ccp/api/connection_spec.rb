@@ -35,7 +35,7 @@ describe Dimelo::CCP::API::Connection do
     context 'HTTP' do
 
       subject do
-        Dimelo::CCP::API::Connection.new('www.google.fr')
+        Dimelo::CCP::API::Connection.new('http://www.google.fr')
       end
 
       let(:request) { [:get, 'http://www.google.fr/'] }
@@ -94,6 +94,12 @@ describe Dimelo::CCP::API::Connection do
     it 'sends user_agent request' do
       response = subject.perform(:get, 'http://www.google.com', {:q => 'hello'})
       expect(response.env[:request_headers][:user_agent]).to eq("DimeloAPI/#{Dimelo::CCP::API::VERSION} Faraday/#{Faraday::VERSION} Ruby/#{RUBY_VERSION}")
+      expect(response).to be_success
+    end
+
+    it 'sends access_token in authorization header' do
+      response = subject.perform(:get, 'http://www.google.com', { q: 'hello', access_token: 'token' })
+      expect(response.env[:request_headers][:authorization]).to eq("Bearer token")
       expect(response).to be_success
     end
 
