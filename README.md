@@ -1,4 +1,4 @@
-# RingCentral Engage Communities ruby API Client
+# RingCentral Engage Communities ruby API Client [![Build Status](https://travis-ci.org/ringcentral/engage-digital-communities-ruby.svg?branch=master)](https://travis-ci.org/ringcentral/engage-digital-communities-ruby)
 
 Ruby client for the Engage Communities
 
@@ -10,8 +10,8 @@ This is heavily used internaly at Engage Communities.
 
 Compatible and tested with:
 
-- Ruby MRI 2.4, 2.5, 2.6, Head and Jruby-head
-- ActiveSupport 3+, 4+, 5+, Head
+- Ruby MRI 2.5, 2.6, 2.7, Head and Jruby-head
+- ActiveSupport 4+, 5+, 6+, Head
 
 
 ## Installation
