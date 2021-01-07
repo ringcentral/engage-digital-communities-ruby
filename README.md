@@ -6,7 +6,7 @@ RubyClient for the Engage Communities
 
 This client support most of Engage Communities resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
 
-This is heavily used internaly at Engage Communities.
+This is heavily used internally at Engage Communities.
 
 # Compatibility
 
