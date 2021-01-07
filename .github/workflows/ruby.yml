@@ -9,11 +9,11 @@ jobs:
         ruby: ['2.5', '2.6', '2.7', 'jruby-head', 'ruby-head']
         gemfile: ['activesupport-4.2.x', 'activesupport-5.2.x', 'activesupport-6.0.x', 'activesupport-head']
         exclude:
-          - rvm: 2.7
+          - ruby: 2.7
             gemfile: activesupport-4.2.x
-          - rvm: ruby-head
+          - ruby: ruby-head
             gemfile: activesupport-4.2.x
-          - rvm: jruby-head
+          - ruby: jruby-head
             gemfile: activesupport-4.2.x
     env:
       BUNDLE_GEMFILE: gemfiles/Gemfile.${{ matrix.gemfile }}
