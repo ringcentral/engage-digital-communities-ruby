@@ -1,6 +1,8 @@
-# RingCentral Engage Communities ruby API Client [![Build Status](https://travis-ci.org/ringcentral/engage-digital-communities-ruby.svg?branch=master)](https://travis-ci.org/ringcentral/engage-digital-communities-ruby)
+# RingCentral Engage Communities ruby API Client
 
-Ruby client for the Engage Communities
+[![Build Status](https://travis-ci.org/ringcentral/engage-digital-communities-ruby.svg?branch=master)](https://travis-ci.org/ringcentral/engage-digital-communities-ruby)
+
+RubyClient for the Engage Communities
 
 This client support most of Engage Communities resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
 
