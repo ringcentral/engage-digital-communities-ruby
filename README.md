@@ -1,6 +1,6 @@
 # RingCentral Engage Communities ruby API Client
 
-[![Build Status](https://travis-ci.org/ringcentral/engage-digital-communities-ruby.svg?branch=master)](https://travis-ci.org/ringcentral/engage-digital-communities-ruby)
+![Build Status](https://github.com/ringcentral/engage-digital-communities-ruby/workflows/Ruby%20CI/badge.svg)
 
 RubyClient for the Engage Communities
 
