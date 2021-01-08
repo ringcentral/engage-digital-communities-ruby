@@ -1,8 +1,8 @@
-# RingCentral Engage Communities ruby API Client
+# RingCentral Engage Communities Ruby API Client
 
 ![Build Status](https://github.com/ringcentral/engage-digital-communities-ruby/workflows/Ruby%20CI/badge.svg)
 
-RubyClient for the Engage Communities
+RubyClient for the Engage Communities.
 
 This client support most of Engage Communities resources, can read and write them, paginates with cursor like interface, supports attachments and supports proper validation and error format.
 
@@ -49,7 +49,6 @@ end
 feedbacks = Dimelo::CCP::Feedback.find({ :order => 'updated_at.desc' }, feedbacks_client)
 puts "feedbacks count: #{feedbacks.count}"
 puts "feedbacks not by anonymous and superadmin: #{feedbacks.select{|f| f.user_id.present?}.count}"
-
 ```
 
 ## Contributing
