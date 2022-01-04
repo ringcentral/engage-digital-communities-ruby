@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Dimelo::CCP::API::Client do
 
   subject do
-    Dimelo::CCP::API::Client.new('https://domain-test.api.users.dimelo.info:4433/1.0', 'access_token' => ENV['DIMELO_API_KEY'], :http_options => {:timeout => 80})
+    Dimelo::CCP::API::Client.new('https://domain-test.api.users.dimelo.com/1.0', 'access_token' => ENV['DIMELO_API_KEY'], :http_options => {:timeout => 80})
   end
 
   def response_error(status, error, message='')
@@ -58,7 +58,7 @@ describe Dimelo::CCP::API::Client do
     end
 
     it 'raise DomainNotFoundError if request on invalid domain' do
-      client = Dimelo::CCP::API::Client.new('https://no-domain.api.users.dimelo.info:4433/1.0', :http_options => {:timeout => 80})
+      client = Dimelo::CCP::API::Client.new('https://no-domain.api.users.dimelo.com/1.0', :http_options => {:timeout => 80})
       expect{
         client.transport(:get, 'check', {'access_token' => 'my-token'})
       }.to raise_error(Dimelo::CCP::API::DomainNotFoundError)

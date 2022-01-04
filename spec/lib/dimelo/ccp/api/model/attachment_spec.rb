@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Dimelo::CCP::Attachment do
-  let(:client) { Dimelo::CCP::API::Client.new('https://domain-test.api.answers.dimelo.info/1.0', 'access_token' => 'foo') }
+  let(:client) { Dimelo::CCP::API::Client.new('https://domain-test.api.answers.dimelo.com/1.0', 'access_token' => 'foo') }
 
   describe Dimelo::CCP::QuestionAttachment do
 
