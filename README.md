@@ -12,7 +12,7 @@ This is heavily used internally at Engage Communities.
 
 Compatible and tested with:
 
-- Ruby MRI 2.5, 2.6, 2.7, Head and Jruby-head
+- Ruby MRI 2.6, 2.7, 3.0 and HEAD
 - ActiveSupport 4+, 5+, 6+, Head
 
 
