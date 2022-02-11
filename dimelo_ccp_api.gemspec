@@ -22,5 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency('activemodel', '>= 4.2')
   s.add_dependency('faraday', '< 2')
   s.add_development_dependency('rake')
-  s.add_development_dependency('rspec', '~> 3.0')
+  s.add_development_dependency('rspec', '~> 3.0', '< 3.10')
 end
