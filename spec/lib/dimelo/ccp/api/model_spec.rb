@@ -4,7 +4,7 @@ describe Dimelo::CCP::API::Model do
 
   class User < Dimelo::CCP::API::Model
     path 'groups/%{group_id}/users/%{id}'
-    attributes :id, :firstname, :lastname
+    attributes :id, :firstname, :lastname, :from_user_id
   end
 
   class BaseUser < Dimelo::CCP::API::Model
@@ -159,4 +159,32 @@ describe Dimelo::CCP::API::Model do
 
   end
 
+
+  describe '.errors' do
+    it 'works with simple attributes' do
+      user = User.parse(%[
+          {
+            "error": "validation_error",
+            "errors" : [ {"attribute": "firstname", "type": "invalid", "message": "Firstname is invalid"} ],
+            "message": "User can't be saved",
+            "status": 422
+          }
+        ])
+
+      expect(user.errors.full_messages.to_sentence).to eq("firstname invalid")
+    end
+
+    it 'works with associations' do
+      user = User.parse(%[
+          {
+            "error": "validation_error",
+            "errors" : [ {"attribute": "from_user", "type": "invalid", "message": "From User is invalid"} ],
+            "message": "User can't be saved",
+            "status": 422
+          }
+        ])
+
+      expect(user.errors.full_messages.to_sentence).to eq("from_user invalid")
+    end
+  end
 end

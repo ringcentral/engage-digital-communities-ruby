@@ -204,6 +204,17 @@ module Dimelo::CCP
         defined?(Rails) ? Rails.logger.warn(message) : STDERR.puts(message)
       end
 
+      def read_attribute_for_validation(attr)
+        attributes[attr] ||  attributes["#{attr}_id"]
+      end
+
+      def self.human_attribute_name(attr, options = {})
+        attr
+      end
+
+      def self.lookup_ancestors
+        [self]
+      end
     end
   end
 end
