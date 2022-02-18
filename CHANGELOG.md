@@ -1,3 +1,7 @@
+# 0.5.0
+
+Added compatibility with Active Model 6.1
+
 # 0.4.4
 
 Now uses HTTP Authorization Header instead of passing access_token via params.
